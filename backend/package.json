@@ -1,0 +1,19 @@
+{
+  "name": "swiftdeliver",
+  "version": "1.0.0",
+  "description": "application de gestion de livraison dont le but et de faciliter et ameliorer la la gestion et l'experience de client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mysql2": "^3.22.6",
+    "nodemon": "^3.1.14",
+    "sequelize": "^6.37.8",
+    "sequelize-cli": "^6.6.5"
+  }
+}
