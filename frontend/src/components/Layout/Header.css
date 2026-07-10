@@ -1,0 +1,22 @@
+.main-header {
+  width: 100%;
+  height: 70px; /* Adjust height as needed */
+  background-color: #ffffff; /* White background to contrast with the dark sidebar */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Pushes content to the top-right */
+  padding: 0 40px; /* Spacing from the right edge */
+  box-sizing: border-box;
+  border-bottom: 1px solid #e2e8f0; /* Optional: subtle bottom border */
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.header-logo {
+  height: 45px; /* Restricts image height so it doesn't blow up */
+  width: auto;  /* Maintains aspect ratio */
+  object-fit: contain;
+}
