@@ -1,0 +1,137 @@
+/* Layout global de l'application */
+.dashboard-layout {
+  display: flex;
+  background-color: #ecf1f4; /* Fond gris très clair de l'application */
+  min-height: 100vh;
+}
+
+.main-window {
+  margin-left: 260px; /* Largeur exacte de votre Sidebar */
+  width: calc(100% - 260px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Zone de contenu */
+.NewOrderContent {
+  padding: 30px 50px;
+  box-sizing: border-box;
+}
+
+.order-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* --- 1. Style Informations Générales (Ligne du haut) --- */
+.section-full-width {
+  width: 100%;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1000px;
+}
+
+.info-row h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.inline-field {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.inline-field label {
+  font-weight: 600;
+  color: #000000;
+}
+
+/* --- 2. Style de la Grille (2 Colonnes) --- */
+.form-grid-columns {
+  display: grid;
+  grid-template-columns: 1xl 1fr; /* Deux colonnes égales */
+  grid-template-columns: repeat(2, minmax(0, 500px)); 
+  gap: 60px; /* Espace horizontal important entre Retrait et Dépôt */
+}
+
+.grid-column {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.container-box h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 20px 0;
+}
+
+/* --- 3. Alignements des champs (Label à gauche, Input à droite) --- */
+.form-group-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.form-group-row label {
+  width: 140px; /* Largeur fixe pour forcer l'alignement vertical des inputs */
+  font-weight: 600;
+  color: #000000;
+  padding-top: 8px;
+}
+
+/* Inputs, Selects et Textareas styles de la maquette */
+.NewOrderContent input,
+.NewOrderContent select,
+.NewOrderContent textarea {
+  flex: 1;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 4px;
+  background-color: #ffffff; /* Inputs sur fond blanc complet */
+  font-size: 0.9rem;
+  color: #334155;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+}
+
+.NewOrderContent textarea {
+  height: 80px;
+  resize: none;
+}
+
+/* Pour le champ "Distance" */
+.NewOrderContent input[type="number"] {
+  max-width: 150px; /* Réduit comme sur la capture */
+}
+
+/* Ajustement pour l'alignement de la boîte informations */
+.alignment-fix {
+  margin-top: 15px;
+}
+
+/* --- 4. Boutons --- */
+.btn-validate {
+  background-color: #15803d; /* Vert de la maquette */
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s;
+}
+
+.btn-validate:hover {
+  background-color: #166534;
+}

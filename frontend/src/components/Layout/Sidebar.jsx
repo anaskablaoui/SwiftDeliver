@@ -8,8 +8,8 @@ function Sidebar({ role }) {
             nav = (
                 <nav>
                     <ul>
-                        <li><a href="/client">Dashboard</a></li>
-                        <li><a href="/client/orders">Commande</a></li>
+                        <li><a href="/client/dashboard">Dashboard</a></li>
+                        <li><a href="/client/order-history">Commande</a></li>
                         <li><a href="/client/profile">Profile</a></li>
                     </ul>
                 </nav>

@@ -1,0 +1,135 @@
+/* Arrière-plan complet de la page */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #334155; /* Fond bleu/gris foncé de la maquette */
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* La carte centrale */
+.login-card {
+  display: flex;
+  width: 850px;
+  height: 500px;
+  background-color: #f1f5f9; /* Fond très clair du côté formulaire */
+  border-radius: 12px;
+  overflow: hidden; /* Pour que l'image respecte les bords arrondis */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Côté Gauche - Conteneur d'image */
+.login-image-side {
+  flex: 1;
+  height: 100%;
+}
+
+.login-image-side img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* L'image remplit parfaitement l'espace sans se déformer */
+}
+
+/* Côté Droit - Conteneur du formulaire */
+.login-form-side {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Logo SwiftDelivery */
+.logo-container {
+  margin-bottom: 15px;
+}
+
+.login-logo {
+  height: 60px;
+  width: auto;
+}
+
+/* Titre "Connexion" */
+.login-form-side h2 {
+  margin: 0 0 24px 0;
+  color: #000000;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+/* Formulaire et champs */
+.login-form-side form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.login-form-side label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1e293b;
+  text-align: left;
+}
+
+.login-form-side input {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: #dbdbdb; /* Couleur grise des inputs de la maquette */
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #334155;
+  box-sizing: border-box;
+}
+
+.login-form-side input::placeholder {
+  color: #707070;
+}
+
+.login-form-side input:focus {
+  outline: 2px solid #3b82f6; /* Focus bleu soft */
+}
+
+/* Bouton Log In */
+.btn-login {
+  background-color: #3b82f6; /* Bleu du bouton */
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: center; /* Centre uniquement le bouton comme sur l'image */
+  margin-top: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-login:hover {
+  background-color: #2563eb;
+}
+
+/* Texte en bas (Sign up) */
+.signup-text {
+  margin-top: 24px;
+  font-size: 0.9rem;
+  color: #000000;
+  font-weight: 500;
+}
+
+.signup-text a {
+  color: #000000;
+  font-weight: 600;
+  text-decoration: underline;
+}

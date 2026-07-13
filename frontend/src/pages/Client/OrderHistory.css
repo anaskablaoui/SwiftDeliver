@@ -1,0 +1,181 @@
+/* ==========================================================================
+   1. STRUCTURATION DE LA PAGE (Résout le problème de superposition de la Sidebar)
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+.page-layout {
+  display: flex;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #f3f4f6; /* Fond de page gris clair */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Force la Sidebar à conserver sa place à gauche sans flotter sur le contenu */
+.page-layout > aside,
+.page-layout > .sidebar,
+.page-layout > div:first-child { 
+  width: 260px;
+  min-width: 260px;
+  flex-shrink: 0;
+  position: relative !important; /* Annule d'éventuels absolute/fixed de la sidebar */
+}
+
+/* Conteneur principal qui regroupe le Header et le Main Content */
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Empêche le tableau de casser le layout */
+}
+
+/* Espacement du contenu sous le Header */
+.orderHistory-content {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   2. BLOC DE FILTRAGE
+   ========================================================================== */
+.filter-container {
+  background-color: #ffffff;
+  padding: 20px 40px;
+  display: flex;
+  gap: 80px;
+  align-items: center;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.filter-group label {
+  font-weight: 700;
+  color: #000000;
+  font-size: 14px;
+}
+
+.filter-input {
+  border: none;
+  outline: none;
+  color: #666666;
+  font-size: 14px;
+  padding: 5px;
+  background: transparent;
+}
+
+.filter-select {
+  border: none;
+  outline: none;
+  color: #666666;
+  font-size: 14px;
+  padding: 5px 25px 5px 5px;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M1 3l4 4 4-4' stroke='%23666' stroke-width='1.5' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+/* ==========================================================================
+   3. TABLEAU DES COMMANDES (Style Strict & Bordures Noires)
+   ========================================================================== */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+}
+
+/* En-tête bleu ciel */
+.orders-table th {
+  background-color: #3498db;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 18px 10px;
+  text-align: center;
+  border: 1px solid #000000; /* Bordures noires comme l'image */
+  text-transform: lowercase;
+}
+
+/* Lignes du corps */
+.orders-table td {
+  padding: 18px 10px;
+  text-align: center;
+  color: #333333;
+  font-size: 14px;
+  border: 1px solid #000000; /* Bordures noires comme l'image */
+}
+
+.price-cell {
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   4. BOUTONS (Actions et Bouton Ajouter)
+   ========================================================================== */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-action {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Couleurs correspondantes aux icônes */
+.btn-edit { background-color: #f39c12; }
+.btn-view { background-color: #7f8c8d; }
+.btn-delete { background-color: #c0392b; }
+
+/* Wrapper et design pour le bouton vert + Ajouter */
+.add-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.btn-add {
+  background-color: #27ae60;
+  color: #ffffff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-add:hover {
+  background-color: #219653;
+}

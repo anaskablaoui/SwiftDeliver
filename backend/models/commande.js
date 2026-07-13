@@ -5,6 +5,7 @@ module.exports = (sequelize,DataType) => {
             autoIncrement:true,
             primaryKey:true,
         },
+        
         type_commmande:{
             type:DataType.ENUM( 'restaurant', 'pharmacie', 'colis', 'courses'),
         },
@@ -91,7 +92,7 @@ module.exports = (sequelize,DataType) => {
     });
 
     // Relation livreur (optionnelle au départ, assignée plus tard)
-    commande.belongsTo(models.User, {
+    commande.belongsTo(models.Livreur, {
         foreignKey: {
             name: 'livreur_id',
             allowNull: true,

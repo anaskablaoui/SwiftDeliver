@@ -1,9 +1,31 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
+
+// importing database
 const db = require('./models');
 
-db.sequelize.authenticate()
+//midelware
+app.use(express.json())
+app.use(cors());
+
+//routes
+const authRoutes = require('./routes/authRoutes')
+const clientRoutes = require('./routes/clientRoutes')
+const commandeRoutes = require('./routes/commandeRoutes')
+const livreurRoutes = require('./routes/livreurRoutes')
+const statsRoutes = require('./routes/statsRoutes')
+const settingsRoutes = require('./routes/settings')
+
+app.use('/api/auth', authRoutes)
+app.use('/api/commandes', commandeRoutes)
+app.use('/api/livreurs', livreurRoutes)
+app.use('/api/clients', clientRoutes)
+app.use('/api/stats', statsRoutes)
+app.use('/api/settings', settingsRoutes)
+
+db.sequelize.sync()
     .then(() => {
         console.log('Database connected');
         app.listen(3000, () => {

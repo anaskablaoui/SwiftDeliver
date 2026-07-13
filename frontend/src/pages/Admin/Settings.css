@@ -1,0 +1,99 @@
+/* Layout applicatif global constant */
+.dashboard-layout {
+  display: flex;
+  background-color: #ecf1f4; /* Fond gris clair */
+  min-height: 100vh;
+}
+
+.main-window {
+  margin-left: 260px; /* Aligné sur votre Sidebar */
+  width: calc(100% - 260px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Zone centrale pour positionner le bloc au milieu de l'espace disponible */
+.config-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+/* La carte de configuration blanche */
+.config-card {
+  background-color: #ffffff;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 550px; /* Largeur carrée compacte de la maquette */
+  padding: 40px 50px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+}
+
+/* Titre "Configuration systeme" */
+.config-card h2 {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 50px 0; /* Grand espace sous le titre */
+}
+
+/* Conteneur de chaque champ (Label à gauche, Input à droite) */
+.config-form-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px; /* Espace vertical important entre les lignes */
+}
+
+.config-form-group label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #000000;
+  text-transform: capitalize;
+}
+
+/* Inputs Gris de la maquette */
+.config-form-group input {
+  width: 230px; /* Largeur fixe des inputs de la maquette */
+  padding: 12px;
+  border: none;
+  background-color: #dbdbdb; /* Même couleur grise que les autres formulaires */
+  border-radius: 4px;
+  font-size: 0.95rem;
+  color: #000000;
+  text-align: center; /* Centre le texte (xx DHS) */
+  box-sizing: border-box;
+}
+
+.config-form-group input::placeholder {
+  color: #555555;
+}
+
+/* Conteneur pour pousser le bouton à droite comme sur la capture */
+.config-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* Bouton Valider Vert */
+.btn-validate {
+  background-color: #009639; /* Vert fidèle à la maquette */
+  color: white;
+  border: none;
+  padding: 10px 35px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-validate:hover {
+  background-color: #007d2f;
+}
