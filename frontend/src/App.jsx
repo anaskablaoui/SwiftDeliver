@@ -24,6 +24,8 @@ import Orders from './pages/Admin/Orders'
 import Livreurs from './pages/Admin/Livreurs'
 import Clients from './pages/Admin/Clients'
 import Settings from './pages/Admin/Settings'
+import OrderDetailsAdmin from './pages/Admin/OrderDetails'
+import NewOrderAdmin from './pages/Admin/NewOrder'
 
 function App() {
   return (
@@ -51,6 +53,8 @@ function App() {
         <Route path='/admin/livreurs' element={<Livreurs />} />
         <Route path='/admin/clients' element={<Clients />} />
         <Route path='/admin/settings' element={<Settings />} />
+        <Route path='/admin/order/:id' element={<OrderDetailsAdmin/>} ></Route>
+        <Route path='/admin/new-order' element={<NewOrderAdmin/>}></Route>
       </Routes>
     </BrowserRouter>
   )

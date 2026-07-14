@@ -6,7 +6,7 @@ module.exports = (sequelize,DataType) => {
             primaryKey:true,
         },
         
-        type_commmande:{
+        type_commande:{
             type:DataType.ENUM( 'restaurant', 'pharmacie', 'colis', 'courses'),
         },
         //pointRetrait
@@ -18,7 +18,7 @@ module.exports = (sequelize,DataType) => {
                 type:DataType.STRING(20),
                 allowNull:false
             },
-        adress_retirait:{
+        adresse_retrait:{
                type: DataType.TEXT,
                allowNull:false
             }
@@ -32,7 +32,7 @@ module.exports = (sequelize,DataType) => {
                 type:DataType.STRING(20),
                 allowNull:false
             },
-        adress_livraison:{
+        adresse_livraison:{
                 type:DataType.TEXT,
                 allowNull:false
             }

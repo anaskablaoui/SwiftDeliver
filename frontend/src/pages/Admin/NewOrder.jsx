@@ -4,8 +4,7 @@ import Sidebar from "../../components/Layout/Sidebar";
 import "./NewOrder.css"; 
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
-import axios from 'axios'
-import { useParams } from 'react-router-dom'
+import axios from 'axios';
 
 function NewOrder() {
   const initialValues = {
@@ -33,19 +32,17 @@ function NewOrder() {
   });
 
   const onSubmit = (data) => {
-    axios.post('http://localhost:3000/api/commandes',data).then((response)=>{
+      axios.post('http://localhost:3000/api/commandes',data).then((response)=>{
       console.log('it worked')
     })
   };
 
-    let { id } = useParams();
   return (
     <div className="dashboard-layout">
-        
       <Sidebar role="client" />
       
       <div className="main-window">
-        
+        <Header />
         
         <main className="NewOrderContent">
           <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>

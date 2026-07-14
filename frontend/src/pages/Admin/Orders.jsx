@@ -63,15 +63,15 @@ function Order() {
                   <tr key={index}>
                     <td>{order.id}</td>
                     <td>{order.client.nom} {order.client.prenom}</td>
-                    <td>{order.livreur.User.nom} {order.livreur.User.prenom} </td>
-                    <td className="price-cell">{order.type_commmande}</td>
+                    <td> {order.livreur? `${order.livreur.User.nom} ${order.livreur.User.prenom}` : "non assigne"}  </td>
+                    <td className="price-cell">{order.type_commande}</td>
                     <td>{order.Statut}</td>
                     <td> {order.prixLivraison} </td>
                     <td> {order.created_at} </td>
                     <td>
                       <div className="action-buttons">
                         <button className="btn-action btn-edit">⚙️</button>
-                        <button className="btn-action btn-view">👁️</button>
+                        <a href={`/admin/order/${order.id}`}><button className="btn-action btn-view">👁️</button></a>
                         <button className="btn-action btn-delete">🗑️</button>
                       </div>
                     </td>
@@ -82,7 +82,7 @@ function Order() {
 
             {/* Bouton Ajouter */}
             <div className="add-button-wrapper">
-              <button className="btn-add">+ Ajouter</button>
+              <a href="/admin/new-order"><button className="btn-add">+ Ajouter</button></a>
             </div>
           </div>
         </main>

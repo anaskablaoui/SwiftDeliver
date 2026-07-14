@@ -29,7 +29,7 @@ function OrderHistory() {
         <main className="orderHistory-content">
           {/* Section Filtrage */}
           <div className="filter-container">
-            <div className="filter-group">
+            <div className="filter-group"> 
               <label>Nom de retrait</label>
               <input type="text" placeholder="retrait" className="filter-input" />
             </div>

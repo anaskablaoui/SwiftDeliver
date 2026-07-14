@@ -2,8 +2,48 @@ import React from 'react';
 import Header from '../../components/Layout/Header';
 import Sidebar from '../../components/Layout/Sidebar';
 import './Profile.css'; // Importation du CSS
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from 'yup';
+import axios from 'axios';
 
 function Profile() {
+  const passwordInitialValues = {
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+  };
+
+  const passwordValidationSchema = Yup.object().shape({
+    oldPassword: Yup.string().required("Obligatoire"),
+    newPassword: Yup.string().required("Obligatoire"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('newPassword')], "Les mots de passe ne correspondent pas")
+      .required("Obligatoire")
+  });
+
+  const onPasswordSubmit = (data) => {
+    axios.put('http://localhost:3000/api/auth/password', data).then((response) => {
+      console.log('it worked')
+    })
+  };
+
+  const infoInitialValues = {
+    telephone: "",
+    email: "",
+    photo: null
+  };
+
+  const infoValidationSchema = Yup.object().shape({
+    telephone: Yup.string().required("Obligatoire"),
+    email: Yup.string().email("Email invalide").required("Obligatoire")
+  });
+
+  const onInfoSubmit = (data) => {
+    axios.put('http://localhost:3000/api/auth/me', data).then((response) => {
+      console.log('it worked')
+    })
+  };
+
   return (
     <div className="dashboard-layout">
       {/* Sidebar & Header intégrés globalement */}
@@ -41,50 +81,66 @@ function Profile() {
             {/* FORMULAIRE GAUCHE : MOT DE PASSE */}
             <div className="profile-card-form">
               <h3>Changer le mots de passe</h3>
-              <form>
-                <div className="profile-form-group">
-                  <label htmlFor="old-password">ancien mots de passe:</label>
-                  <input type="password" id="old-password" />
-                </div>
-                
-                <div className="profile-form-group">
-                  <label htmlFor="new-password">nouveau mots de passe:</label>
-                  <input type="password" id="new-password" />
-                </div>
-                
-                <div className="profile-form-group">
-                  <label htmlFor="confirm-password">confirmer mots de passe:</label>
-                  <input type="password" id="confirm-password" />
-                </div>
-                
-                <button type="submit" className="btn-save">valider</button>
-              </form>
+              <Formik initialValues={passwordInitialValues} onSubmit={onPasswordSubmit} validationSchema={passwordValidationSchema}>
+                <Form>
+                  <div className="profile-form-group">
+                    <label htmlFor="old-password">ancien mots de passe:</label>
+                    <Field type="password" id="old-password" name="oldPassword" />
+                    <ErrorMessage name="oldPassword" component="span" className="error-msg" />
+                  </div>
+
+                  <div className="profile-form-group">
+                    <label htmlFor="new-password">nouveau mots de passe:</label>
+                    <Field type="password" id="new-password" name="newPassword" />
+                    <ErrorMessage name="newPassword" component="span" className="error-msg" />
+                  </div>
+
+                  <div className="profile-form-group">
+                    <label htmlFor="confirm-password">confirmer mots de passe:</label>
+                    <Field type="password" id="confirm-password" name="confirmPassword" />
+                    <ErrorMessage name="confirmPassword" component="span" className="error-msg" />
+                  </div>
+
+                  <button type="submit" className="btn-save">valider</button>
+                </Form>
+              </Formik>
             </div>
 
             {/* FORMULAIRE DROITE : INFOS GÉNÉRALES */}
             <div className="profile-card-form">
               <h3>Modifier les informations</h3>
-              <form>
-                <div className="profile-form-group">
-                  <label htmlFor="edit-phone">telephone</label>
-                  <input type="tel" id="edit-phone" />
-                </div>
-                
-                <div className="profile-form-group">
-                  <label htmlFor="edit-email">email</label>
-                  <input type="email" id="edit-email" />
-                </div>
-                
-                <div className="profile-form-group">
-                  <label>photo</label>
-                  <label htmlFor="file-upload" className="custom-file-upload">
-                    import img
-                  </label>
-                  <input type="file" id="file-upload" style={{ display: 'none' }} />
-                </div>
-                
-                <button type="submit" className="btn-save">valider</button>
-              </form>
+              <Formik initialValues={infoInitialValues} onSubmit={onInfoSubmit} validationSchema={infoValidationSchema}>
+                {({ setFieldValue }) => (
+                  <Form>
+                    <div className="profile-form-group">
+                      <label htmlFor="edit-phone">telephone</label>
+                      <Field type="tel" id="edit-phone" name="telephone" />
+                      <ErrorMessage name="telephone" component="span" className="error-msg" />
+                    </div>
+
+                    <div className="profile-form-group">
+                      <label htmlFor="edit-email">email</label>
+                      <Field type="email" id="edit-email" name="email" />
+                      <ErrorMessage name="email" component="span" className="error-msg" />
+                    </div>
+
+                    <div className="profile-form-group">
+                      <label>photo</label>
+                      <label htmlFor="file-upload" className="custom-file-upload">
+                        import img
+                      </label>
+                      <input
+                        type="file"
+                        id="file-upload"
+                        style={{ display: 'none' }}
+                        onChange={(event) => setFieldValue("photo", event.currentTarget.files[0])}
+                      />
+                    </div>
+
+                    <button type="submit" className="btn-save">valider</button>
+                  </Form>
+                )}
+              </Formik>
             </div>
 
           </div>

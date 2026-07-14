@@ -1,8 +1,37 @@
 import React from 'react';
 import logo from '../../assets/Gemini_Generated_Image_rrpvi6rrpvi6rrpv.png';
 import './Register.css'; // Importation du CSS
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from 'yup';
+import axios from 'axios';
 
 function Register() {
+  const initialValues = {
+    nom: "",
+    email: "",
+    password: "",
+    prenom: "",
+    telephone: "",
+    passwordConfirm: ""
+  };
+
+  const validationSchema = Yup.object().shape({
+    nom: Yup.string().required("Obligatoire"),
+    email: Yup.string().email("Email invalide").required("Obligatoire"),
+    password: Yup.string().required("Obligatoire"),
+    prenom: Yup.string().required("Obligatoire"),
+    telephone: Yup.string().required("Obligatoire"),
+    passwordConfirm: Yup.string()
+      .oneOf([Yup.ref('password')], "Les mots de passe ne correspondent pas")
+      .required("Obligatoire")
+  });
+
+  const onSubmit = (data) => {
+    axios.post('http://localhost:3000/api/auth/register', data).then((response) => {
+      console.log('it worked')
+    })
+  };
+
   return (
     <div className="registerPage">
       <div className="registerCard">
@@ -12,49 +41,57 @@ function Register() {
           <h2>Insription</h2> {/* Orthographe fidèle à votre maquette */}
         </div>
 
-        <form>
-          {/* Conteneur des deux colonnes */}
-          <div className="form-columns">
-            {/* Colonne Gauche */}
-            <div className="form1-side">
-              <div className="form-group">
-                <label htmlFor="Nom">Nom :</label>
-                <input type="text" id="Nom" placeholder="Entrez votre nom" />
+        <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+          <Form>
+            {/* Conteneur des deux colonnes */}
+            <div className="form-columns">
+              {/* Colonne Gauche */}
+              <div className="form1-side">
+                <div className="form-group">
+                  <label htmlFor="Nom">Nom :</label>
+                  <Field type="text" id="Nom" name="nom" placeholder="Entrez votre nom" />
+                  <ErrorMessage name="nom" component="span" className="error-msg" />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="email">Email :</label>
+                  <Field type="email" id="email" name="email" placeholder="Entrez votre email" />
+                  <ErrorMessage name="email" component="span" className="error-msg" />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="password">Mot de passe :</label>
+                  <Field type="password" id="password" name="password" placeholder="Entrez le mots de passe" />
+                  <ErrorMessage name="password" component="span" className="error-msg" />
+                </div>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="email">Email :</label>
-                <input type="email" id="email" placeholder="Entrez votre email" />
-              </div>
+              {/* Colonne Droite */}
+              <div className="form2-side">
+                <div className="form-group">
+                  <label htmlFor="Prenom">Prenom :</label>
+                  <Field type="text" id="Prenom" name="prenom" placeholder="Entrez votre prenom" />
+                  <ErrorMessage name="prenom" component="span" className="error-msg" />
+                </div>
 
-              <div className="form-group">
-                <label htmlFor="password">Mot de passe :</label>
-                <input type="password" id="password" placeholder="Entrez le mots de passe" />
+                <div className="form-group">
+                  <label htmlFor="telephone">Telephone :</label>
+                  <Field type="tel" id="telephone" name="telephone" placeholder="Entrez votre telephone" />
+                  <ErrorMessage name="telephone" component="span" className="error-msg" />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="passwordConfirm">Confirmer mots de passe :</label>
+                  <Field type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Confirmez mots de passe" />
+                  <ErrorMessage name="passwordConfirm" component="span" className="error-msg" />
+                </div>
               </div>
             </div>
 
-            {/* Colonne Droite */}
-            <div className="form2-side">
-              <div className="form-group">
-                <label htmlFor="Prenom">Prenom :</label>
-                <input type="text" id="Prenom" placeholder="Entrez votre prenom" />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="telephone">Telephone :</label>
-                <input type="tel" id="telephone" placeholder="Entrez votre telephone" />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="passwordConfirm">Confirmer mots de passe :</label>
-                <input type="password" id="passwordConfirm" placeholder="Confirmez mots de passe" />
-              </div>
-            </div>
-          </div>
-
-          {/* Bouton centré en bas */}
-          <button type="submit" id="inscrire">s'inscrire</button>
-        </form>
+            {/* Bouton centré en bas */}
+            <button type="submit" id="inscrire">s'inscrire</button>
+          </Form>
+        </Formik>
       </div>
     </div>
   );
