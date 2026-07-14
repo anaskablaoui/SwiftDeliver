@@ -19,7 +19,14 @@ function Login() {
 
   const onSubmit = (data) => {
     axios.post('http://localhost:3000/api/auth/login', data).then((response) => {
-      console.log('it worked')
+      console.log(response.data);
+      if (response.data.error) {
+        alert(response.data.error);
+      } else {
+        const token = response.data.token;
+        sessionStorage.setItem('accesstoken', token);
+        window.location.href = '/admin/orders';
+      }
     })
   };
 

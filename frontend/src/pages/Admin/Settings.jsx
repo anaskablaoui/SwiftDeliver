@@ -19,7 +19,8 @@ function SystemConfig() {
 
   const onSubmit = (data) => {
     axios.put('http://localhost:3000/api/settings', data).then((response) => {
-      console.log('it worked')
+      console.log('it worked');
+      window.location.reload();
     })
   };
 

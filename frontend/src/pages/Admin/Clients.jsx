@@ -9,7 +9,12 @@ function OrderHistory() {
 const [listOfClient , setListOfClient] = useState([])
 
 useState(()=>{
-  axios.get("http://localhost:3000/api/clients").then((response)=>{
+  axios.get("http://localhost:3000/api/clients",
+  {
+    headers:{
+      accesstoken:sessionStorage.getItem("accesstoken")
+    }
+  }).then((response)=>{
       setListOfClient(response.data)
     })
 })

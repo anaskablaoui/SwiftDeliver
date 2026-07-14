@@ -28,7 +28,8 @@ function Register() {
 
   const onSubmit = (data) => {
     axios.post('http://localhost:3000/api/auth/register', data).then((response) => {
-      console.log('it worked')
+      console.log('it worked');
+      window.location.reload();
     })
   };
 

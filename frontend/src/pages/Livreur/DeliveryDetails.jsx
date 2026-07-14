@@ -14,7 +14,7 @@ function NewOrder() {
         
         
         <main className="NewOrderContent">
-          <form className="order-form">
+          <form className="order-form" onSubmit={(e) => { e.preventDefault(); window.location.reload(); }}>
             
             {/* 1. SECTION INFORMATION GENERALE */}
             <div className="section-full-width general-info">

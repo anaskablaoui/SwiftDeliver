@@ -3,8 +3,9 @@ const express = require('express')
 const router =express.Router()
 const db = require('../models')
 const { where } = require('sequelize')
+const { validationToken } = require('../middleware/authMiddleware')
 
-router.get('/', async (req,res)=>{
+router.get('/', validationToken, async (req,res)=>{
     try {
         const listOfCommandes = await db.commande.findAll({
             include:[
@@ -33,7 +34,7 @@ router.get('/', async (req,res)=>{
     }
 })
 
-router.get('/:id',async (req,res)=>{
+router.get('/:id', validationToken, async (req,res)=>{
     
     console.log(req.params.id)
     try{
@@ -65,7 +66,7 @@ router.get('/:id',async (req,res)=>{
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', validationToken, async (req, res) => {
     try {
         const payload = req.body || {};
 
@@ -101,19 +102,19 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/:id',(req,res)=>{
+router.put('/:id', validationToken, (req,res)=>{
     res.send('this is commande modification')
 })
 
-router.delete('/:id',(req,res)=>{
+router.delete('/:id', validationToken, (req,res)=>{
     res.send('this is commande deleting')
 })
 
-router.patch('/:id/statut',(req,res)=>{
+router.patch('/:id/statut', validationToken, (req,res)=>{
     res.send('this is command statut ')
 })
 
-router.patch('/:id/assigner',(req,res)=>{
+router.patch('/:id/assigner', validationToken, (req,res)=>{
     res.send('this is assignement commande to the delivery man')
 })
 

@@ -23,7 +23,8 @@ function Profile() {
 
   const onPasswordSubmit = (data) => {
     axios.put('http://localhost:3000/api/auth/password', data).then((response) => {
-      console.log('it worked')
+      console.log('it worked');
+      window.location.reload();
     })
   };
 
@@ -40,7 +41,8 @@ function Profile() {
 
   const onInfoSubmit = (data) => {
     axios.put('http://localhost:3000/api/auth/me', data).then((response) => {
-      console.log('it worked')
+      console.log('it worked');
+      window.location.reload();
     })
   };
 

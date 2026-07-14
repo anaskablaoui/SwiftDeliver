@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const db = require('../models')
+const { validationToken } = require('../middleware/authMiddleware')
 
 // all of this is admin needs
 
-router.get('/', async (req, res) => {
+router.get('/', validationToken, async (req, res) => {
     try {
         const listOfLivreur = await db.Livreur.findAll({
             include:[
@@ -20,19 +21,19 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/:id',(req,res)=>{
+router.get('/:id', validationToken, (req,res)=>{
     res.send('this delivery man details')
 })
 
-router.post('/',(req,res)=> {
+router.post('/', validationToken, (req,res)=> {
     res.send('this is delivery man creation ')
 })
 
-router.put('/:id',(req,res)=>{
+router.put('/:id', validationToken, (req,res)=>{
     res.send('this is delivery man modification')
 })
 
-router.delete('/:id',(req,res)=> {
+router.delete('/:id', validationToken, (req,res)=> {
     res.send('this is delivery man deleting')
 })
 

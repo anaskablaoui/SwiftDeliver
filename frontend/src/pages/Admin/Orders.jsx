@@ -8,14 +8,20 @@ import { useEffect, useState } from "react";
 function Order() {
   // Données fictives pour remplir le tableau comme sur l'image
   const [listOfOrders,setListOfOrders]= useState([])
-
+  console.log(sessionStorage.getItem("accesstoken"))
  useEffect(() => {
-    axios.get("http://localhost:3000/api/commandes")
+    axios.get("http://localhost:3000/api/commandes",
+        {
+          headers:{
+            accessToken:sessionStorage.getItem('accesstoken')
+          }
+        })
         .then((response) => {
             console.log(response.data);
             console.log(Array.isArray(response.data));
             setListOfOrders(response.data);
-        });
+        }
+      );
 }, []);
 
   return (
