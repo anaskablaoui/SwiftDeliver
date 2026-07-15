@@ -29,7 +29,7 @@ router.post('/login',async (req,res)=>{
             })
         }
         else{
-            const accessToken = sign({email: user.email,id:user.id}, "important" )
+            const accessToken = sign({email: user.email,id:user.id,role:user.role}, "important" )
             console.log('u logged in ')
             res.json({
                 token: accessToken,

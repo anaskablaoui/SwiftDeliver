@@ -13,7 +13,11 @@ function NewOrder() {
     
     const [Order,setListOfOrders]= useState({})
    useEffect(() => {
-    axios.get(`http://localhost:3000/api/commandes/${id}`)
+    axios.get(`http://localhost:3000/api/commandes/${id}`,{
+      headers:{
+        accessToken:sessionStorage.getItem('accesstoken')
+      }
+    })
         .then((response) => {
             console.log(response.data);
             console.log(Array.isArray(response.data));

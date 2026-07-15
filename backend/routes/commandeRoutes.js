@@ -4,36 +4,10 @@ const router =express.Router()
 const db = require('../models')
 const { where } = require('sequelize')
 const { validationToken } = require('../middleware/authMiddleware')
+const {validateRole} = require('../middleware/roleMiddleware')
+const {getCommande} = require('../controllers/commandesController')
 
-router.get('/', validationToken, async (req,res)=>{
-    try {
-        const listOfCommandes = await db.commande.findAll({
-            include:[
-            {
-                model:db.User,
-                where:{
-                    role:'client'
-                },
-                as:'client'
-            },
-            {
-                model:db.Livreur,
-                as:'livreur',
-                required:false,
-                include:{
-                    model:db.User
-                }
-            }
-        ]
-        })
-
-        res.json(listOfCommandes)
-    } catch (err) {
-        console.error(err)
-        res.status(500).json({ message: err.message })
-    }
-})
-
+router.get('/', validationToken, getCommande);
 router.get('/:id', validationToken, async (req,res)=>{
     
     console.log(req.params.id)
@@ -71,13 +45,13 @@ router.post('/', validationToken, async (req, res) => {
         const payload = req.body || {};
 
         const commandeData = {
-            type_commmande: payload.type_commmande || payload.type_commande,
+            type_commande:  payload.type_commande,
             nom_retrait: payload.nom_retrait,
             telephone_retrait: payload.telephone_retrait,
-            adress_retirait: payload.adress_retirait || payload.adresse_retrait,
+            adresse_retrait:  payload.adresse_retrait,
             nom_livraison: payload.nom_livraison,
             telephone_livraison: payload.telephone_livraison,
-            adress_livraison: payload.adress_livraison || payload.adresse_livraison,
+            adresse_livraison:  payload.adresse_livraison,
             distanceKM: payload.distanceKM,
             instructionSpecial: payload.instructionSpecial,
             prixLivraison: payload.prixLivraison ?? (payload.distanceKM ? Number(payload.distanceKM) * 5 : 0),
@@ -95,6 +69,7 @@ router.post('/', validationToken, async (req, res) => {
         }
 
         const createdCommande = await db.commande.create(commandeData);
+        console.log("it worked")
         res.status(201).json(createdCommande);
     } catch (err) {
         console.error(err);

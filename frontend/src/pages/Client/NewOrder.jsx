@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import axios from 'axios'
 
 function NewOrder() {
+  
   const initialValues = {
     type_commande: "",
     nom_retrait: "",
@@ -32,7 +33,12 @@ function NewOrder() {
   });
 
   const onSubmit = (data) => {
-    axios.post('http://localhost:3000/api/commandes', data).then((response) => {
+    console.log('I AM TESTING =============================')
+    axios.post('http://localhost:3000/api/commandes', data,{
+      headers:{
+        accessToken:sessionStorage.getItem('accesstoken')
+      }
+    }).then((response) => {
       console.log('it worked');
       window.location.reload();
     })

@@ -2,16 +2,26 @@ import React from "react";
 import Header from "../../components/Layout/Header";
 import Sidebar from "../../components/Layout/Sidebar";
 import "./OrderHistory.css"; // N'oubliez pas d'importer le CSS
-
+import axios from 'axios'
+import { useEffect, useState} from "react";
 function OrderHistory() {
   // Données fictives pour remplir le tableau comme sur l'image
-  const orders = Array(5).fill({
-    livraison: "livraison a",
-    retrait: "retrait a",
-    destinataire: "destinataire a",
-    prix: "120.00 DHS",
-    statut: "livree",
-  });
+  const [listOfOrders,setListOfOrders]= useState([])
+  console.log(sessionStorage.getItem("accesstoken"))
+ useEffect(() => {
+    axios.get("http://localhost:3000/api/commandes",
+        {
+          headers:{
+            accessToken:sessionStorage.getItem('accesstoken')
+          }
+        })
+        .then((response) => {
+            console.log(response.data);
+            console.log(Array.isArray(response.data));
+            setListOfOrders(response.data);
+        }
+      );
+}, []);
 
   return (
     
@@ -43,26 +53,30 @@ function OrderHistory() {
             <table className="orders-table">
               <thead>
                 <tr>
-                  <th>nom livraison</th>
-                  <th>nom retrait</th>
-                  <th>nom destinataire</th>
-                  <th>prix</th>
+                  <th>num</th>
+                  <th>client</th>
+                  <th>livreur</th>
+                  <th>type</th>
                   <th>statut</th>
+                  <th>Prix</th>
+                  <th>Date</th>
                   <th>actions</th>
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order, index) => (
+                {listOfOrders.map((order, index) => (
                   <tr key={index}>
-                    <td>{order.livraison}</td>
-                    <td>{order.retrait}</td>
-                    <td>{order.destinataire}</td>
-                    <td className="price-cell">{order.prix}</td>
-                    <td>{order.statut}</td>
+                    <td>{order.id}</td>
+                    <td>{order.client.nom} {order.client.prenom}</td>
+                    <td> {order.livreur? `${order.livreur.User.nom} ${order.livreur.User.prenom}` : "non assigne"}  </td>
+                    <td className="price-cell">{order.type_commande}</td>
+                    <td>{order.Statut}</td>
+                    <td> {order.prixLivraison} </td>
+                    <td> {order.created_at} </td>
                     <td>
                       <div className="action-buttons">
                         <button className="btn-action btn-edit">⚙️</button>
-                        <button className="btn-action btn-view">👁️</button>
+                        <a href={`/admin/order/${order.id}`}><button className="btn-action btn-view">👁️</button></a>
                         <button className="btn-action btn-delete">🗑️</button>
                       </div>
                     </td>
@@ -73,7 +87,7 @@ function OrderHistory() {
 
             {/* Bouton Ajouter */}
             <div className="add-button-wrapper">
-              <button className="btn-add">+ Ajouter</button>
+              <a href="/client/new-order"><button className="btn-add">+ Ajouter</button></a>
             </div>
           </div>
         </main>

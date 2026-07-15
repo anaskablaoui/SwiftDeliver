@@ -25,7 +25,7 @@ function Login() {
       } else {
         const token = response.data.token;
         sessionStorage.setItem('accesstoken', token);
-        window.location.href = '/admin/orders';
+        //window.location.href = '/admin/orders';
       }
     })
   };
