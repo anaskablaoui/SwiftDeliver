@@ -5,19 +5,24 @@ module.exports = (sequelize, DataType) => {
             primaryKey: true,
             autoIncrement: true
         },
-        cle: {
-            type: DataType.STRING(50),
-            unique: true,
-            allowNull: false
+        tarifKm:{
+            type:DataType.DECIMAL(6,2),
+            allowNull:false
         },
-        valeur: {
-            type: DataType.STRING(255),
-            allowNull: false
+        prixbase:{
+            type:DataType.DECIMAL(6,2),
+            allowNull:false
         },
-        description: {
-            type: DataType.TEXT,
-            allowNull: false
+        fraisLivreur:{
+            type:DataType.DECIMAL(2,2),
+            allowNull:false,
+            validate:{
+                max:1,
+                min:0
+            }
         }
+    }, {
+        timestamps: false
     });
 
     return settings;

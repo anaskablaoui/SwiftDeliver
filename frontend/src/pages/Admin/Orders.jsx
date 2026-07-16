@@ -28,7 +28,7 @@ function Order() {
     
     <div className="page-layout">
       <Header />
-      <Sidebar role="client" />
+      <Sidebar role="admin" />
       <div className="main-wrapper">
        
         

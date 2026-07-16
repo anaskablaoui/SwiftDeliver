@@ -5,8 +5,22 @@ import './Profile.css'; // Importation du CSS
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useEffect, useState } from "react";
 
 function Profile() {
+
+  const [me,setMe] = useState({})
+  console.log(sessionStorage.getItem("accesstoken"))
+  useEffect(()=>{
+    axios.get("http://localhost:3000/api/auth/me",{
+      headers:{
+        accessToken:sessionStorage.getItem('accesstoken')
+      }
+    }).then((response)=>{
+      setMe(response.data)
+    })
+  }, [])
+
   const passwordInitialValues = {
     oldPassword: "",
     newPassword: "",
@@ -24,7 +38,7 @@ function Profile() {
   const onPasswordSubmit = (data) => {
     axios.put('http://localhost:3000/api/auth/password', data).then((response) => {
       console.log('it worked');
-      window.location.reload();
+      
     })
   };
 
@@ -50,7 +64,7 @@ function Profile() {
     <div className="dashboard-layout">
       {/* Sidebar & Header intégrés globalement */}
       <Header />
-      <Sidebar role="client" />
+      <Sidebar role="admin" />
       
       <div className="main-window">
         
@@ -65,15 +79,15 @@ function Profile() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
               </svg>
               <div className="user-details">
-                <h2>Nom Prenom</h2>
+                <h2> {me.nom} {me.prenom} </h2>
                 <div className="user-sub-details">
-                  <span className="user-email">nomPrenom@gmail.com</span>
-                  <span className="user-phone">0600606060</span>
+                  <span className="user-email">{me.email}</span>
+                  <span className="user-phone"> {me.telephone} </span>
                 </div>
               </div>
             </div>
             <div className="role-badge">
-              role: <span className="role-name">client</span>
+              role: <span className="role-name"> {me.role} </span>
             </div>
           </div>
 

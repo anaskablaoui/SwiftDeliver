@@ -1,14 +1,35 @@
 import React from 'react';
 import Header from '../../components/Layout/Header';
 import Sidebar from '../../components/Layout/Sidebar';
+import { useEffect, useState} from "react";
 import './Dashboard.css'; // Importation du CSS
+import axios from 'axios'
 
 function Dashboard() {
+  const [listOfstats,setListOfStats] = useState({
+    todayCommande: {},
+    totalCommande: {},
+    totalGains: {}
+  })
+  console.log(sessionStorage.getItem("accesstoken"))
+  useEffect(()=>{
+    axios.get("http://localhost:3000/api/stats/dashboard",{
+      headers:{
+        accesstoken:sessionStorage.getItem('accesstoken')
+      }
+    }).then((response)=>{
+      console.log('test')
+      console.log(response.data);
+      console.log(Array.isArray(response.data));
+      setListOfStats(response.data)
+    })
+  }, [])
+  
   return (
     <div className="dashboard-layout">
       {/* Sidebar dédiée au livreur */}
        <Header />
-      <Sidebar role="livreur" />
+      <Sidebar role="admin" />
       
       <div className="main-window">
        
@@ -19,7 +40,7 @@ function Dashboard() {
           <div className="stats-row">
             <div className="stat-card">
               <h4>Missions d’aujourd’hui</h4>
-              <span className="stat-number">20</span>
+              <span className="stat-number"> {listOfstats.todayCommande.todaysTotal} </span>
             </div>
             
             <div className="stat-card">

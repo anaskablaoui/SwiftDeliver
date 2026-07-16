@@ -1,0 +1,88 @@
+/* Layout Applicatif Global */
+.dashboard-layout {
+  display: flex;
+  background-color: #ecf1f4; /* Même arrière-plan gris très clair */
+  min-height: 100vh;
+}
+
+.main-window {
+  margin-left: 260px; /* Aligné sur la largeur de votre Sidebar */
+  width: calc(100% - 260px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Zone principale du tableau de bord */
+.dashboardContent {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 35px; /* Espace entre les stats et le graphique */
+  box-sizing: border-box;
+}
+
+/* --- LE BLOC DES CARTES DE STATS --- */
+.stats-row {
+  display: flex;
+  gap: 30px; /* Espace entre chaque carte */
+  width: 100%;
+  max-width: 1100px;
+}
+
+.stat-card {
+  flex: 1; /* Distribue l'espace équitablement entre les 3 cartes */
+  background-color: #ffffff;
+  border-radius: 6px;
+  padding: 24px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 110px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+}
+
+.stat-card h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.stat-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #16a34a; /* Vert vif par défaut pour les chiffres de la maquette */
+  text-align: right; /* Aligne le chiffre à droite */
+}
+
+/* Optionnel : si vous voulez changer la couleur du texte sur certaines cartes */
+.green-text {
+  color: #16a34a;
+}
+
+/* --- LE BLOC DU GRAPHIQUE --- */
+.chart-container-box {
+  background-color: #ffffff;
+  border-radius: 6px;
+  padding: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  max-width: 1100px;
+  min-height: 450px; /* Donne une hauteur fixe confortable pour le graphique */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chart-placeholder {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0 0 20px 0;
+  font-weight: 500;
+}
+
+.dummy-chart-space {
+  width: 100%;
+  flex: 1;
+  /* Ce conteneur est prêt à accueillir le canevas de Chart.js */
+}

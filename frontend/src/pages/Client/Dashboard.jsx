@@ -1,6 +1,9 @@
 import Sidebar from '../../components/Layout/Sidebar'
 import Header from '../../components/Layout/Header'
 import Stepper from '../../components/Layout/stepper'
+import { useEffect, useState} from "react";
+import axios from 'axios'
+import './Dashboard.css'
 
 function ClientDashboard(){
   {/*test variable */}
@@ -10,6 +13,26 @@ function ClientDashboard(){
     { name: 'livraison b', currentStep: 2, color: '#f59e0b' }, // stopped at "en cours de retrait"
     { name: 'livraison c', currentStep: 3, color: '#d946ef' }, // stopped at "en livraison"
   ];
+
+  const [listOfstats,setListOfStats] = useState({
+    todayCommande: {},
+    totalCommande: {},
+    totalGains: {}
+  })
+  console.log(sessionStorage.getItem("accesstoken"))
+  useEffect(()=>{
+    axios.get("http://localhost:3000/api/stats/dashboard",{
+      headers:{
+        accesstoken:sessionStorage.getItem('accesstoken')
+      }
+    }).then((response)=>{
+      console.log('test')
+      console.log(response.data);
+      console.log(Array.isArray(response.data));
+      setListOfStats(response.data)
+    })
+  }, [])
+  
   return(
     <>
       <Header/>
@@ -19,7 +42,7 @@ function ClientDashboard(){
         <div className="container">
             <div>
               <h3>commande live</h3>
-                <h2 className="live">20 </h2>
+                <h2 className="live"> 20 </h2>
             </div>
             <div>
               <h3>commande en cours</h3>

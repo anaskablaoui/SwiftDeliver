@@ -7,16 +7,12 @@ module.exports = {
       {
         cle: 'prix_base',
         valeur: '15',
-        description: 'Prix de base en MAD',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        description: 'Prix de base en MAD'
       },
       {
         cle: 'tarif_km',
         valeur: '3',
-        description: 'Tarif par kilometrage en MAD',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        description: 'Tarif par kilometrage en MAD'
       },
     ]);
   },

@@ -3,9 +3,10 @@ const router = express.Router()
 const { validationToken } = require('../middleware/authMiddleware')
 const db = require('../models')
 const {validateRole} = require('../middleware/roleMiddleware')
+const {getCommande} = require('../controllers/commandesController')
 
-router.get('/', validationToken,validateRole('admin'),async(req,res)=>{
-    try{const role= await db.settings.findAll()
+router.get('/', validationToken,getCommande,async(req,res)=>{
+    try{const role= await db.settings.findOne()
     res.json(role)}
     catch{
         res.status(500).json({

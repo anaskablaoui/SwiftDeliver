@@ -16,7 +16,7 @@ const clientRoutes = require('./routes/clientRoutes')
 const commandeRoutes = require('./routes/commandeRoutes')
 const livreurRoutes = require('./routes/livreurRoutes')
 const statsRoutes = require('./routes/statsRoutes')
-const settingsRoutes = require('./routes/settings')
+const settingsRoutes = require('./routes/settingsRoutes')
 
 app.use('/api/auth', authRoutes)
 app.use('/api/commandes', commandeRoutes)

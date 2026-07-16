@@ -32,7 +32,7 @@ function Sidebar({ role }) {
             nav = (
                 <nav>
                     <ul>
-                        <li><a href="/admin">Dashboard</a></li>
+                        <li><a href="/admin/dashboard">Dashboard</a></li>
                         <li><a href="/admin/orders">Livraison</a></li>
                         <li><a href="/admin/livreurs">Livreur</a></li>
                         <li><a href="/admin/clients">Client</a></li>

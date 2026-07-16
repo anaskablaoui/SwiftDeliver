@@ -16,13 +16,13 @@ function OrderHistory() {
       
       setListofLivreur(response.data)
     })
-  },)
+  }, [])
 
   return (
     
     <div className="page-layout">
       <Header />
-      <Sidebar role="client" />
+      <Sidebar role="admin" />
       <div className="main-wrapper">
        
         

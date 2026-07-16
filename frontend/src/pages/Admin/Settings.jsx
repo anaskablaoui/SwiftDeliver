@@ -5,15 +5,25 @@ import './Settings.css'; // Importation du CSS
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
 import axios from 'axios';
+import {useEffect,useState} from 'react'
 
 function SystemConfig() {
-  const initialValues = {
-    tarifBase: "",
-    tarifKm: ""
-  };
+  const [setting, setSetting] = useState({})
+
+  useEffect(()=>{
+    axios.get('http://localhost:3000/api/settings',{
+      headers:{
+        accessToken:sessionStorage.getItem('accesstoken')
+      }
+    }).then((response)=>{
+      console.log(response.data);
+      console.log(Array.isArray(response.data));
+      setSetting(response.data)
+    })
+  }, []);
 
   const validationSchema = Yup.object().shape({
-    tarifBase: Yup.number().required("Obligatoire").positive("Doit être positive"),
+    prixbase: Yup.number().required("Obligatoire").positive("Doit être positive"),
     tarifKm: Yup.number().required("Obligatoire").positive("Doit être positive")
   });
 
@@ -36,18 +46,24 @@ function SystemConfig() {
           <div className="config-card">
             <h2>Configuration systeme</h2>
 
-            <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+            <Formik initialValues={setting} enableReinitialize onSubmit={onSubmit} validationSchema={validationSchema}>
               <Form>
                 <div className="config-form-group">
                   <label htmlFor="base-tariff">tarif de base</label>
-                  <Field type="text" id="base-tariff" name="tarifBase" placeholder="xx DHS" />
-                  <ErrorMessage name="tarifBase" component="span" className="error-msg" />
+                  <Field type="number" id="prixbase" name="prixbase" placeholder="xx DHS" />
+                  <ErrorMessage name="prixbase" component="span" className="error-msg" />
                 </div>
 
                 <div className="config-form-group">
                   <label htmlFor="km-tariff">tarif par km</label>
-                  <Field type="text" id="km-tariff" name="tarifKm" placeholder="xx DHS" />
+                  <Field type="text" id="tarifkm" name="tarifKm" placeholder="xx DHS" />
                   <ErrorMessage name="tarifKm" component="span" className="error-msg" />
+                </div>
+
+                <div className="config-form-group">
+                  <label htmlFor="fraisLivreur">frais de livreur</label>
+                  <Field type="text" id="fraisLivreur" name="fraisLivreur" placeholder="xx DHS" />
+                  <ErrorMessage name="fraisLivreur" component="span" className="error-msg" />
                 </div>
 
                 <div className="config-btn-container">

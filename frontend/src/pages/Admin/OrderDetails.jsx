@@ -25,18 +25,6 @@ function NewOrder() {
         });
 }, []);
   
-  const initialValues = {
-    type_commande: Order.type_commande,
-    nom_retrait: Order.nom_retrait,
-    adresse_retrait: "",
-    telephone_retrait: "",
-    nom_livraison: "",
-    adresse_livraison: "",
-    telephone_livraison: "",
-    distanceKM: "",
-    instructionSpecial: ""
-  };
-
   const validationSchema = Yup.object().shape({
     type_commande: Yup.string().required("Obligatoire"),
     nom_retrait: Yup.string().required("Obligatoire"),
@@ -60,7 +48,7 @@ function NewOrder() {
   return (
     <div className="dashboard-layout">
         
-      <Sidebar role="client" />
+      <Sidebar role="admin" />
       
       <div className="main-window">
         

@@ -6,20 +6,25 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
+import {useEffect,useState} from 'react'
 
 function NewOrder() {
-  const initialValues = {
-    type_commande: "",
-    nom_retrait: "",
-    adresse_retrait: "",
-    telephone_retrait: "",
-    nom_livraison: "",
-    adresse_livraison: "",
-    telephone_livraison: "",
-    distanceKM: "",
-    instructionSpecial: ""
-  };
-
+    let { id } = useParams();
+    
+    const [Order,setListOfOrders]= useState({})
+   useEffect(() => {
+    axios.get(`http://localhost:3000/api/commandes/${id}`,{
+      headers:{
+        accessToken:sessionStorage.getItem('accesstoken')
+      }
+    })
+        .then((response) => {
+            console.log(response.data);
+            console.log(Array.isArray(response.data));
+            setListOfOrders(response.data);
+        });
+}, []);
+  
   const validationSchema = Yup.object().shape({
     type_commande: Yup.string().required("Obligatoire"),
     nom_retrait: Yup.string().required("Obligatoire"),
@@ -33,13 +38,13 @@ function NewOrder() {
   });
 
   const onSubmit = (data) => {
-    axios.post('http://localhost:3000/api/commandes', data).then((response) => {
+    axios.post('http://localhost:3000/api/commandes/', data).then((response) => {
       console.log('it worked');
       window.location.reload();
     })
   };
 
-    let { id } = useParams();
+  
   return (
     <div className="dashboard-layout">
         
@@ -49,9 +54,9 @@ function NewOrder() {
         
         
         <main className="NewOrderContent">
-          <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+          <Formik initialValues={Order} onSubmit={onSubmit} validationSchema={validationSchema} enableReinitialize>
             <Form className="order-form">
-              
+              <h1>{id}</h1>
               {/* 1. INFORMATION GENERALE */}
               <div className="section-full-width general-info">
                 <div className="info-row">
@@ -59,7 +64,7 @@ function NewOrder() {
                   <div className="inline-field">
                     <label htmlFor="type">type de livraison</label>
                     <div className="input-with-error">
-                      <Field as="select" name="type_commande" id="type">
+                      <Field as="select" name="type_commande" id="type" >
                         <option value="" disabled>selectionner le type</option>
                         <option value="restaurant">restaurant</option>
                         <option value="pharmacie">pharmacie</option>

@@ -40,7 +40,7 @@ function NewOrder() {
 
   return (
     <div className="dashboard-layout">
-      <Sidebar role="client" />
+      <Sidebar role="admin" />
       
       <div className="main-window">
         <Header />

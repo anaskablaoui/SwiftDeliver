@@ -66,8 +66,25 @@ router.post('/register',(req,res) => {
     }
 })
 
-router.get('/me', validationToken, (req,res)=> {
-    res.send('this is the about me page')
+router.get('/me', validationToken, async (req,res)=> {
+    try{
+        const me =  await db.User.findOne({
+            where:{
+                id:req.user.id
+            }
+        })
+        res.json(me)
+        console.log(me)
+        console.log("== Information de utilisateur connecte passe ===")
+    }
+    catch (error){
+        console.log(error)
+        res.status(500).json({error:'erreur lors de la reco=uperation de donne'})
+    }
+})
+
+router.put('/me',validationToken,(req,res)=>{
+    console.log("this is modification me ")
 })
 
 
