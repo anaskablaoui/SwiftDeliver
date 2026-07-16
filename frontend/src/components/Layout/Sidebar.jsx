@@ -2,6 +2,10 @@ import './Sidebar.css'
 
 function Sidebar({ role }) {
     let nav;
+    const submit = ()=>{
+        sessionStorage.removeItem('accesstoken')
+        window.location.replace('/')
+    }
 
     switch (role) {
         case 'client':
@@ -9,6 +13,7 @@ function Sidebar({ role }) {
                 <nav>
                     <ul>
                         <li><a href="/client/dashboard">Dashboard</a></li>
+                        <li><a href="/client/new-order">Nouvelle commande</a></li>
                         <li><a href="/client/order-history">Commande</a></li>
                         <li><a href="/client/profile">Profile</a></li>
                     </ul>
@@ -51,7 +56,7 @@ function Sidebar({ role }) {
         <aside>
             <div className="blocks">bonjour Monsieur</div>
             <div className="blocks">{nav}</div>
-            <div className="blocks"><button>deconnexion</button></div>
+            <div className="blocks"><button onClick={submit}>deconnexion</button></div>
         </aside>
     );
 }

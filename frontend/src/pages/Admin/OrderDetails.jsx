@@ -9,6 +9,8 @@ import { useParams } from 'react-router-dom'
 import {useEffect,useState} from 'react'
 
 function NewOrder() {
+
+
     let { id } = useParams();
     
     const [Order,setListOfOrders]= useState({})
@@ -38,7 +40,11 @@ function NewOrder() {
   });
 
   const onSubmit = (data) => {
-    axios.post('http://localhost:3000/api/commandes/', data).then((response) => {
+    axios.put(`http://localhost:3000/api/commandes/${id}`, data,{
+      headers:{
+        accessToken:sessionStorage.getItem('accesstoken')
+      }
+    }).then((response) => {
       console.log('it worked');
       window.location.reload();
     })

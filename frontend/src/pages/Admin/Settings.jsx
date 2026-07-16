@@ -27,13 +27,27 @@ function SystemConfig() {
     tarifKm: Yup.number().required("Obligatoire").positive("Doit être positive")
   });
 
-  const onSubmit = (data) => {
-    axios.put('http://localhost:3000/api/settings', data).then((response) => {
+  const onSubmitPassword = (data) => {
+    axios.put('http://localhost:3000/api/settings/passwrod', data,{
+      headers:{
+        accessToken:sessionStorage.getItem('accesstoken')
+      }
+    }).then((response) => {
       console.log('it worked');
       window.location.reload();
     })
   };
 
+  const onSubmitme = (data) => {
+    axios.put('http://localhost:3000/api/settings/me', data,{
+      headers:{
+        accessToken:sessionStorage.getItem('accesstoken')
+      }
+    }).then((response) => {
+      console.log('it worked');
+      window.location.reload();
+    })
+  };
   return (
     <div className="dashboard-layout">
       {/* Sidebar configurée pour l'admin */}

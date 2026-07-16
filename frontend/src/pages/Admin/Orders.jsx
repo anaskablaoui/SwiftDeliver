@@ -6,6 +6,18 @@ import axios from 'axios';
 import { useEffect, useState } from "react";
 
 function Order() {
+  //fonction de suppression
+  const deleting = (id)=>{
+      axios.delete(`http://localhost:3000/api/commandes/${id}`,{
+        headers:{
+          accessToken:sessionStorage.getItem('accesstoken')
+        }
+      }).then((response)=>{
+        console.log('it worked');
+        window.location.reload();
+      })
+  };
+
   // Données fictives pour remplir le tableau comme sur l'image
   const [listOfOrders,setListOfOrders]= useState([])
   console.log(sessionStorage.getItem("accesstoken"))
@@ -78,7 +90,7 @@ function Order() {
                       <div className="action-buttons">
                         <button className="btn-action btn-edit">⚙️</button>
                         <a href={`/admin/order/${order.id}`}><button className="btn-action btn-view">👁️</button></a>
-                        <button className="btn-action btn-delete">🗑️</button>
+                        <button className="btn-action btn-delete" onClick={() => deleting(order.id)}>🗑️</button>
                       </div>
                     </td>
                   </tr>

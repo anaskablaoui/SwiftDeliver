@@ -9,11 +9,27 @@ function OrderHistory() {
   // Données fictives pour remplir le tableau comme sur l'image
   const [listOfLivreur, setListofLivreur] = useState([])
 
+  //fonction de suppression
+  const deleting = (id) => {
+    axios.delete(`http://localhost:3000/api/livreurs/${id}`,{
+      headers:{
+        accessToken:sessionStorage.getItem('accesstoken')
+      }
+    }).then((response)=>{
+      console.log('it worked');
+      window.location.reload();
+    })
+  };
+
   useEffect(()=>{
-    axios.get('http://localhost:3000/api/livreurs').then((response)=>{
+    axios.get('http://localhost:3000/api/livreurs',{
+      headers:{
+        accessToken:sessionStorage.getItem('accesstoken')
+      }
+    }).then((response)=>{
       console.log(response.data);
       console.log(Array.isArray(response.data));
-      
+
       setListofLivreur(response.data)
     })
   }, [])
@@ -74,7 +90,7 @@ function OrderHistory() {
                       <div className="action-buttons">
                         <button className="btn-action btn-edit">⚙️</button>
                         <button className="btn-action btn-view">👁️</button>
-                        <button className="btn-action btn-delete">🗑️</button>
+                        <button className="btn-action btn-delete" onClick={() => deleting(order.id)}>🗑️</button>
                       </div>
                     </td>
                   </tr>

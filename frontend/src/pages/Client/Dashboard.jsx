@@ -6,6 +6,8 @@ import axios from 'axios'
 import './Dashboard.css'
 
 function ClientDashboard(){
+
+  
   {/*test variable */}
   const steps = ['en attente', 'assigne au livreur', 'en cours de retrait', 'en livraison', 'livree'];
    const deliveries = [

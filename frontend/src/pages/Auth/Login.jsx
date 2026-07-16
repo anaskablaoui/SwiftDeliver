@@ -19,14 +19,18 @@ function Login() {
 
   const onSubmit = (data) => {
     axios.post('http://localhost:3000/api/auth/login', data).then((response) => {
-      console.log(response.data);
-      if (response.data.error) {
-        alert(response.data.error);
+      const { token, user } = response.data;
+      sessionStorage.setItem('accesstoken', token);
+
+      if (user.role === 'admin') {
+        window.location.href = '/admin/dashboard';
+      } else if (user.role === 'livreur') {
+        window.location.href = '/livreur/dashboard';
       } else {
-        const token = response.data.token;
-        sessionStorage.setItem('accesstoken', token);
-        //window.location.href = '/admin/orders';
+        window.location.href = '/client/dashboard';
       }
+    }).catch((error) => {
+      alert(error.response?.data?.message || "Erreur lors de la connexion");
     })
   };
 

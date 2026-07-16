@@ -36,7 +36,11 @@ function Profile() {
   });
 
   const onPasswordSubmit = (data) => {
-    axios.put('http://localhost:3000/api/auth/password', data).then((response) => {
+    axios.put('http://localhost:3000/api/auth/password', data,{
+      headers:{
+        accessToken:sessionStorage.getItem('accesstoken')
+      }
+    }).then((response) => {
       console.log('it worked');
       
     })
@@ -54,7 +58,11 @@ function Profile() {
   });
 
   const onInfoSubmit = (data) => {
-    axios.put('http://localhost:3000/api/auth/me', data).then((response) => {
+    axios.put('http://localhost:3000/api/auth/me', data,{
+      headers:{
+        accessToken:sessionStorage.getItem('accesstoken')
+      }
+    }).then((response) => {
       console.log('it worked');
       window.location.reload();
     })
@@ -64,7 +72,7 @@ function Profile() {
     <div className="dashboard-layout">
       {/* Sidebar & Header intégrés globalement */}
       <Header />
-      <Sidebar role="admin" />
+      <Sidebar role="client" />
       
       <div className="main-window">
         
@@ -146,6 +154,7 @@ function Profile() {
                         import img
                       </label>
                       <input
+                        name='photo'
                         type="file"
                         id="file-upload"
                         style={{ display: 'none' }}

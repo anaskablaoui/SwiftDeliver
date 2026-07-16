@@ -83,8 +83,92 @@ router.get('/me', validationToken, async (req,res)=> {
     }
 })
 
-router.put('/me',validationToken,(req,res)=>{
-    console.log("this is modification me ")
+router.put('/me',validationToken, async (req,res)=>{
+    try{
+        const [updateMe] = await db.User.update(
+            {telephone:req.body.telephone, email:req.body.email,photo:req.body.photo},
+            {
+                where:{
+                    id:req.user.id
+                }
+            }
+        );
+        if(updateMe>0){
+           console.log("modified successfully")
+            res.status(200).json({
+            message:"User updated successfully"
+    })}else{
+            res.status(404).json({
+            message:"user not found"
+        })
+    }
+    }catch(error){
+        console.log("erreur de modification")
+        res.status(500).json({
+            erreur:"erreur de modification de contenu "
+        })
+    }
+})
+
+router.put('/password',validationToken, async (req,res)=>{
+    const currentUser = await db.User.findOne({
+        where:{
+            id:req.user.id
+        }
+    });
+
+    if(!currentUser){
+        return res.status(404).json({
+            message:"user not found"
+        })
+    }
+    console.log("debuggin mofying password")
+    console.log(req.body.oldPassword)
+    console.log(currentUser.password_hash)
+    console.log(req.body.newPassword)
+    console.log(req.body.confirmPassword)
+
+    const test = await bcrypt.compare(req.body.oldPassword,currentUser.password_hash)
+
+    if(req.body.newPassword == req.body.confirmPassword && test ){
+
+        const password=await bcrypt.hash(req.body.newPassword,10);
+
+        try{
+            const [updatePassword]  = await db.User.update(
+                {password_hash:password},
+                {
+                    where:
+                    {
+                        id:req.user.id
+                    }
+                });
+            if(updatePassword>0){
+                console.log("modified successfully")
+                res.status(200).json({
+                    message:"mots de pass modifier avec succes "
+                })
+            }
+            else{
+                res.status(404).json({
+                    message:"user not found"
+                })
+            }
+        }
+        catch(error){
+            console.log("erreur de modification de mots de pass ")
+            res.status(400).json({
+                erreur:"erreur de modification de mot de passe "
+            })
+        }
+    }
+    else{
+        res.status(500).json({
+            message:"erreur donne passe non valid"
+        })
+    }
+
+
 })
 
 

@@ -38,13 +38,13 @@ function NewOrder() {
   });
 
   const onSubmit = (data) => {
-    axios.post('http://localhost:3000/api/commandes/', data).then((response) => {
+    axios.put(`http://localhost:3000/api/commandes/${id}`, data).then((response) => {
       console.log('it worked');
       window.location.reload();
     })
   };
 
-  
+
   return (
     <div className="dashboard-layout">
         

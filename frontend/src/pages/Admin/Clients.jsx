@@ -5,6 +5,9 @@ import "./OrderHistory.css"; // N'oubliez pas d'importer le CSS
 import axios from 'axios'
 import { useEffect,useState } from "react";
 function OrderHistory() {
+  //fonction de suppression
+  
+
   // Données fictives pour remplir le tableau comme sur l'image
 const [listOfClient , setListOfClient] = useState([])
 
@@ -69,7 +72,6 @@ useState(()=>{
                       <div className="action-buttons">
                         <button className="btn-action btn-edit">⚙️</button>
                         <button className="btn-action btn-view">👁️</button>
-                        <button className="btn-action btn-delete">🗑️</button>
                       </div>
                     </td>
                   </tr>

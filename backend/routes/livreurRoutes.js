@@ -83,8 +83,13 @@ router.put('/:id', validationToken,validateRole('admin'), (req,res)=>{
     res.send('this is delivery man modification')
 })
 
-router.delete('/:id', validationToken,validateRole('admin'), (req,res)=> {
-    res.send('this is delivery man deleting')
+router.delete('/:id', validationToken,validateRole('admin'), async (req,res)=> {
+    await db.Livreur.destroy({
+        where:{
+        id:req.params.id
+        }
+    })
+    res.json({message:'Livreur supprimé avec succès'})
 })
 
 
