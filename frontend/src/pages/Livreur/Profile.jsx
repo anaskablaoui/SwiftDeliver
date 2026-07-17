@@ -50,7 +50,7 @@ function Profile() {
     <div className="dashboard-layout">
       {/* Sidebar & Header intégrés globalement */}
       <Header />
-      <Sidebar role="client" />
+      <Sidebar role="livreur" />
       
       <div className="main-window">
         

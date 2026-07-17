@@ -27,7 +27,7 @@ function OrderHistory() {
     
     <div className="page-layout">
       <Header />
-      <Sidebar role="client" />
+      <Sidebar role="livreur" />
       <div className="main-wrapper">
        
         

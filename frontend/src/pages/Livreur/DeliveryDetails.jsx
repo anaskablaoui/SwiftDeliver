@@ -8,7 +8,7 @@ function NewOrder() {
     <div className="dashboard-layout">
       {/* Sidebar à gauche, Header en haut à droite */}
       <Header />
-      <Sidebar role="client" />
+      <Sidebar role="livreur" />
       
       <div className="main-window">
         

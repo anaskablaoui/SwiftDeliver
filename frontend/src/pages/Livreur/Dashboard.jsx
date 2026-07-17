@@ -1,44 +1,95 @@
 import React from 'react';
 import Header from '../../components/Layout/Header';
 import Sidebar from '../../components/Layout/Sidebar';
+import { useEffect, useState } from "react";
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip
+} from 'chart.js';
 import './Dashboard.css'; // Importation du CSS
+import axios from 'axios'
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
 function Dashboard() {
+  const [listOfstats, setListOfStats] = useState({
+    todayMissions: 0,
+    totalMission: 0,
+    totalGains: 0
+  })
+  const [chartData, setChartData] = useState({ labels: [], data: [] })
+
+  useEffect(()=>{
+    axios.get("http://localhost:3000/api/stats/dashboard",{
+      headers:{
+        accesstoken:sessionStorage.getItem('accesstoken')
+      }
+    }).then((response)=>{
+      setListOfStats(response.data)
+    })
+
+    axios.get("http://localhost:3000/api/stats/gains-par-mois",{
+      headers:{
+        accesstoken:sessionStorage.getItem('accesstoken')
+      }
+    }).then((response)=>{
+      setChartData(response.data)
+    })
+  }, [])
+
+  const lineChartData = {
+    labels: chartData.labels,
+    datasets: [
+      {
+        label: 'Gains par mois (DHS)',
+        data: chartData.data,
+        borderColor: '#16a34a',
+        backgroundColor: 'rgba(22, 163, 74, 0.15)',
+        tension: 0.3,
+        fill: true
+      }
+    ]
+  }
+
   return (
     <div className="dashboard-layout">
       {/* Sidebar dédiée au livreur */}
        <Header />
       <Sidebar role="livreur" />
-      
+
       <div className="main-window">
-       
-        
+
+
         <main className="dashboardContent">
-          
+
           {/* Rangée supérieure : Les 3 cartes de statistiques */}
           <div className="stats-row">
             <div className="stat-card">
-              <h4>Missions d’aujourd’hui</h4>
-              <span className="stat-number">20</span>
+              <h4>Missions d'aujourd'hui</h4>
+              <span className="stat-number">{listOfstats.todayMissions}</span>
             </div>
-            
+
             <div className="stat-card">
               <h4>Total gains de moi</h4> {/* Fidèle à l'orthographe de la maquette */}
-              <span className="stat-number green-text">20 DHS</span>
+              <span className="stat-number green-text">{listOfstats.totalGains} DHS</span>
             </div>
-            
+
             <div className="stat-card">
               <h4>Total mission</h4>
-              <span className="stat-number">20</span>
+              <span className="stat-number">{listOfstats.totalMission}</span>
             </div>
           </div>
 
           {/* Zone inférieure : Le graphique */}
           <div className="chart-container-box">
-            {/* C'est ici que viendra s'insérer votre composant <Line data={...} /> de Chart.js */}
-            <p className="chart-placeholder">Chart.js Line Chart</p>
+            <p className="chart-placeholder">Gains des 12 derniers mois</p>
             <div className="dummy-chart-space">
-              {/* Simulation visuelle ou intégration future de votre graphique */}
+              <Line data={lineChartData} options={{ responsive: true, maintainAspectRatio: false }} />
             </div>
           </div>
 
