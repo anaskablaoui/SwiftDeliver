@@ -72,7 +72,7 @@ function MissionDetail() {
                       placeholder="Nom du retrait"
                     />
                   </div>
-
+                
                   <div className="mission-form-group">
                     <label htmlFor="nom-destinataire">nom destinataire:</label>
                     <Field

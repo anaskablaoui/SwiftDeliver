@@ -21,6 +21,7 @@ function Login() {
     axios.post('http://localhost:3000/api/auth/login', data).then((response) => {
       const { token, user } = response.data;
       sessionStorage.setItem('accesstoken', token);
+      sessionStorage.setItem('role', user.role);
 
       if (user.role === 'admin') {
         window.location.href = '/admin/dashboard';
