@@ -10,6 +10,17 @@ import {useEffect,useState} from 'react'
 
 function NewOrder() {
 
+  const [listOfLivreur,setListOfLivreur] = useState([])
+  useEffect(()=>{
+    console.log(sessionStorage.getItem('accesstoken'))
+    axios.get("http://localhost:3000/api/livreurs",{
+      headers:{
+        accessToken:sessionStorage.getItem('accesstoken')
+      }
+    }) . then((response) =>{
+      setListOfLivreur(response.data)
+    })
+  },[])
 
     let { id } = useParams();
     
@@ -40,7 +51,7 @@ function NewOrder() {
   });
 
   const onSubmit = (data) => {
-    axios.put(`http://localhost:3000/api/commandes/${id}`, data,{
+    axios.patch(`http://localhost:3000/api/commandes/${id}/assigner`, data,{
       headers:{
         accessToken:sessionStorage.getItem('accesstoken')
       }
@@ -125,8 +136,21 @@ function NewOrder() {
                         <Field type="number" id="distance" name="distanceKM" placeholder="xx KM" />
                         <ErrorMessage name="distanceKM" component="span" className="error-msg"/>
                       </div>
+
+                      <label htmlFor="livreur">Livreur</label>
+                      <div className="livreur">
+                        <Field as="select" id="livreur" name="livreur" >
+                          <option value="" disabled selected>selectionner livreur</option>
+                          {listOfLivreur.map((order,index)=>(
+                             <option value={order.id}>{order.User.nom} {order.User.prenom}</option>
+                          ))}
+                        </Field>
+                        <ErrorMessage name="livreur" component="span" className="error-msg"/>
+        
+                      </div>
                     </div>
                   </div>
+                  
                 </div>
 
                 {/* Colonne Droite : Point de dépôt + Informations */}

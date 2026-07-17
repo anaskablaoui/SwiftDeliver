@@ -79,10 +79,7 @@ useState(()=>{
               </tbody>
             </table>
 
-            {/* Bouton Ajouter */}
-            <div className="add-button-wrapper">
-              <button className="btn-add">+ Ajouter</button>
-            </div>
+            
           </div>
         </main>
       </div>

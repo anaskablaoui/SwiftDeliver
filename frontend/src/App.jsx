@@ -17,6 +17,7 @@ import Profile from './pages/Client/Profile'
 import LivreurDashboard from './pages/Livreur/Dashboard'
 import MyDeliveries from './pages/Livreur/MyDeliveries'
 import DeliveryDetails from './pages/Livreur/DeliveryDetails'
+import Mission from './pages/Livreur/Mission'
 
 // Admin Pages
 import AdminDashboard from './pages/Admin/Dashboard'
@@ -26,6 +27,7 @@ import Clients from './pages/Admin/Clients'
 import Settings from './pages/Admin/Settings'
 import OrderDetailsAdmin from './pages/Admin/OrderDetails'
 import NewOrderAdmin from './pages/Admin/NewOrder'
+import NewLivreur from './pages/Admin/newLivreur'
 
 function App() {
   return (
@@ -46,11 +48,13 @@ function App() {
         <Route path='/livreur/dashboard' element={<LivreurDashboard />} />
         <Route path='/livreur/deliveries' element={<MyDeliveries />} />
         <Route path='/livreur/delivery/:id' element={<DeliveryDetails />} />
+        <Route path='/livreur/Mission/:id' element={<Mission/>}/>
 
         {/* Admin Pages */}
         <Route path='/admin/dashboard' element={<AdminDashboard />} />
         <Route path='/admin/orders' element={<Orders />} />
         <Route path='/admin/livreurs' element={<Livreurs />} />
+        <Route path='/admin/new-livreur' element={<NewLivreur />}/>
         <Route path='/admin/clients' element={<Clients />} />
         <Route path='/admin/settings' element={<Settings />} />
         <Route path='/admin/order/:id' element={<OrderDetailsAdmin/>} ></Route>

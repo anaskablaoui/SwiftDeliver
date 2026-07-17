@@ -1,17 +1,27 @@
 import React from "react";
 import Header from "../../components/Layout/Header";
 import Sidebar from "../../components/Layout/Sidebar";
-
-
+import axios from 'axios';
+import { useEffect, useState} from "react";
 function OrderHistory() {
   // Données fictives pour remplir le tableau comme sur l'image
-  const orders = Array(5).fill({
-    livraison: "livraison a",
-    retrait: "retrait a",
-    destinataire: "destinataire a",
-    prix: "120.00 DHS",
-    statut: "livree",
-  });
+  const [listOfOrders,setListOfOrders]= useState([])
+  console.log(sessionStorage.getItem("accesstoken"))
+ useEffect(() => {
+    axios.get("http://localhost:3000/api/commandes",
+        {
+          headers:{
+            accessToken:sessionStorage.getItem('accesstoken')
+          }
+        })
+        .then((response) => {
+            console.log(response.data);
+            console.log(Array.isArray(response.data));
+            setListOfOrders(response.data);
+        }
+      );
+}, []);
+
 
   return (
     
@@ -43,7 +53,7 @@ function OrderHistory() {
             <table className="orders-table">
               <thead>
                 <tr>
-                  <th>nom livraison</th>
+                  <th>Type livraison</th>
                   <th>nom retrait</th>
                   <th>nom destinataire</th>
                   <th>prix</th>
@@ -52,16 +62,17 @@ function OrderHistory() {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order, index) => (
+                {listOfOrders.map((order, index) => (
                   <tr key={index}>
-                    <td>{order.livraison}</td>
-                    <td>{order.retrait}</td>
-                    <td>{order.destinataire}</td>
-                    <td className="price-cell">{order.prix}</td>
-                    <td>{order.statut}</td>
+                    <td>{order.type_commande}</td>
+                    <td>{order.nom_retrait}</td>
+                    <td>{order.nom_livraison}</td>
+                    <td className="price-cell">{order.prixLivraison}</td>
+                    <td>{order.Statut}</td>
                     <td>
                       <div className="action-buttons">
-                        <button className="btn-action btn-view">👁️</button>
+                        <a href={`/livreur/delivery/${order.id}`}><button className="btn-action btn-view">👁️</button></a>
+                        <a href={`/livreur/Mission/${order.id}`}><button className="btn-action btn-start" title="Démarrer la mission">▶️</button></a>
                       </div>
                     </td>
                   </tr>

@@ -1,0 +1,196 @@
+/* Layout applicatif persistant */
+.dashboard-layout {
+  display: flex;
+  background-color: #ecf1f4; /* Fond gris/bleu clair */
+  min-height: 100vh;
+}
+
+.main-window {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Contenu Principal */
+.livreur-content {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  box-sizing: border-box;
+}
+
+/* --- BARRE DE FILTRES --- */
+.filter-card {
+  background-color: #ffffff;
+  border-radius: 6px;
+  padding: 20px 35px;
+  display: flex;
+  gap: 80px; /* Grand espacement horizontal entre les filtres */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  align-items: center;
+  max-width: 1100px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.filter-group label {
+  font-weight: 700;
+  color: #000000;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.filter-group input,
+.filter-group select {
+  padding: 8px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  background-color: #ffffff;
+  font-size: 0.9rem;
+  color: #334155;
+  width: 180px;
+  box-sizing: border-box;
+}
+
+.filter-group input::placeholder {
+  color: #94a3b8;
+}
+
+/* --- LE TABLEAU --- */
+.table-container {
+  max-width: 1100px;
+  border-radius: 8px;
+  overflow: hidden; /* Applique l'arrondi sur les bordures extérieures */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+}
+
+.livreur-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+}
+
+/* En-tête bleu ciel du tableau */
+.livreur-table th {
+  background-color: #38bdf8; /* Couleur bleue vive du header */
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 18px 12px;
+  text-align: center;
+  border: 1.5px solid #000000; /* Lignes noires d'encadrement */
+}
+
+/* Cellules du corps */
+.livreur-table td {
+  padding: 15px 12px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #000000;
+  font-weight: 500;
+  border: 1.5px solid #000000; /* Lignes noires d'encadrement */
+}
+
+/* Cellule contenant la photo de profil */
+.td-photo {
+  width: 70px;
+}
+
+.avatar-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.table-avatar-icon {
+  width: 35px;
+  height: 35px;
+  fill: #000000;
+}
+
+/* --- LES ACTIONS DU TABLEAU --- */
+.td-actions {
+  width: 110px;
+}
+
+.action-buttons-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px; /* Alignement vertical de vos boutons d'action */
+}
+
+/* Style de base des icônes d'action */
+.action-btn {
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 4px;
+}
+
+.action-icon {
+  width: 16px;
+  height: 16px;
+  fill: #ffffff;
+}
+
+/* Suppression - Rouge */
+.btn-delete {
+  background-color: #dc2626;
+}
+.btn-delete:hover {
+  background-color: #b91c1c;
+}
+
+/* Voir détails - Gris */
+.btn-view {
+  background-color: #475569;
+}
+.btn-view:hover {
+  background-color: #334155;
+}
+
+/* Configuration - Orange */
+.btn-settings {
+  background-color: #f59e0b;
+}
+.btn-settings:hover {
+  background-color: #d97706;
+}
+
+/* --- BOUTON D'AJOUT EN BAS --- */
+.add-button-container {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 1100px;
+  margin-top: 10px;
+}
+
+.btn-add-livreur {
+  background-color: #009639; /* Vert de votre maquette */
+  color: #ffffff;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-add-livreur:hover {
+  background-color: #007d2f;
+}

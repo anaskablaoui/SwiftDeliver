@@ -116,8 +116,6 @@ router.put('/:id', validationToken, async (req,res)=>{
         })
     }
     
-        
-    
     }catch(error){
         console.log("erreur de modification")
         res.status(500).json({
@@ -139,9 +137,108 @@ router.patch('/:id/statut', validationToken, (req,res)=>{
     res.send('this is command statut ')
 })
 
-router.patch('/:id/assigner', validationToken, (req,res)=>{
-    res.send('this is assignement commande to the delivery man')
+router.patch('/:id/assigner', validationToken, async (req,res)=>{
+    console.log(req.params.id)
+    
+
+    const livreurId = req.body.livreur
+    try{
+        const [updateCommande] = await db.commande.update(
+            {livreur_id:livreurId,
+            Statut:'assignee'
+            },
+            
+            {
+                where:{
+                    id:req.params.id
+                }
+            }
+        );
+        if(updateCommande>0){
+        console.log("modified successfully")
+        res.status(200).json({
+        message:"commande updated successufaly "
+        })}else{
+        res.status(404).json({
+            message:"commande not found"
+        })
+    }
+    
+        
+    }catch(error){
+        console.log(error)
+        res.status(500).json({
+            erreur:"erreur de modification de contenu "
+        })
+    }
 })
 
+router.put('/mission/:id',validationToken , async (req,res)=>{
+    try { 
+    const commande = await db.commande.findOne({
+        where:{
+            id:req.params.id
+        }
+    })
+    if(!commande)
+    {
+        return res.status(404).json({erreur:"commande not found"})
+    }
+
+    let nextStatut;
+    switch (commande.Statut) {
+
+        case 'assignee':
+            nextStatut = 'en_retrait'
+            break;
+        case 'en_retrait':
+            nextStatut = 'recuperee'
+            break;
+        case 'recuperee':
+            nextStatut = 'livree'
+            break;
+        default:
+            return res.status(400).json({
+                erreur:'erreur de statut'
+            })
+            break;
+    }
+
+    const [updateStatut] = await db.commande.update(
+        {Statut:nextStatut},
+        {
+        where:{
+            id:req.params.id
+        }
+    }
+    )
+    if(updateStatut>0){
+        console.log("modified successfully")
+        res.status(200).json({
+        message:"commande updated successufaly "
+    })}else{
+        res.status(404).json({
+            message:"commande not found"
+        })
+    }
+    
+    } catch(error){
+        console.log("erreur de modification de statut")
+        res.status(500).json({
+            erreur:"erreur de modification de statut"
+        })
+    }
+    
+})
+
+router.delete('/:id', validationToken,validateRole('admin'), async (req,res)=> {
+    await db.Livreur.destroy({
+        where:{
+        id:req.params.id
+        }
+    })
+    res.json({message:'Livreur supprimé avec succès'})
+
+})
 
 module.exports = router

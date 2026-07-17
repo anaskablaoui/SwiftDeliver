@@ -4,9 +4,10 @@ const db = require('../models')
 const { validationToken } = require('../middleware/authMiddleware')
 const {validateRole} = require('../middleware/roleMiddleware')
 const bcrypt = require('bcrypt')
+const { where } = require('sequelize')
 // all of this is admin needs
 
-router.get('/', validationToken,validateRole('admin'), async (req, res) => {
+router.get('/', validationToken, async (req, res) => {
     try {
         const listOfLivreur = await db.Livreur.findAll({
             include:[
@@ -25,7 +26,7 @@ router.get('/', validationToken,validateRole('admin'), async (req, res) => {
 router.get('/:id', validationToken,validateRole('admin'), async (req,res)=>{
     console.log(req.params.id)
     try{
-        const livreur = await db.livreur.findOne({
+        const livreur = await db.Livreur.findOne({
             where:{
                 id:req.params.id
             },
@@ -45,7 +46,7 @@ router.get('/:id', validationToken,validateRole('admin'), async (req,res)=>{
     }
 })
 
-router.post('/', validationToken,validateRole('admin'),  (req,res)=> {
+router.post('/', validationToken, (req,res)=> {
     const payload = req.body || {};
     if (payload.password === payload.passwordConfirm)
     {   bcrypt.hash(payload.password,10).then((hash)=>{
@@ -59,7 +60,7 @@ router.post('/', validationToken,validateRole('admin'),  (req,res)=> {
     }
         db.User.create(userData).then((user)=>{
             const livreurData={
-                userId:user.id,
+                user_id:user.id,
                 type_vehicule:payload.type_vehicule
             }
             db.Livreur.create(livreurData).then(()=>{
@@ -79,19 +80,31 @@ router.post('/', validationToken,validateRole('admin'),  (req,res)=> {
     
 })
 
-router.put('/:id', validationToken,validateRole('admin'), (req,res)=>{
-    res.send('this is delivery man modification')
+router.put('/:id', validationToken,validateRole('admin'), async (req,res)=>{
+    res.json("livreur modification")
 })
 
-router.delete('/:id', validationToken,validateRole('admin'), async (req,res)=> {
-    await db.Livreur.destroy({
-        where:{
-        id:req.params.id
-        }
-    })
-    res.json({message:'Livreur supprimé avec succès'})
+router.get('/assignement',validationToken, async (req,res)=>{
+    try{
+        const listOfLivreur = await db.commande.findAll({
+            where:{
+                Statut:"disponible"
+            },
+            include:[
+                {
+                    model:db.User,
+                    as:'user'
+                 }
+            ]
+        })
+        res.json(listOfLivreur)
+    }catch(error){
+        console.log("erreur de recuperation de donnee")
+        res.status(400).json({
+            erreur:"erreur de recuperation de donnee"
+        })
+    }
 })
-
 
 
 module.exports =  router

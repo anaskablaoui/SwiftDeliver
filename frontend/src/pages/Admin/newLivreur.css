@@ -1,0 +1,125 @@
+/* Arrière-plan complet de la page */
+.registerPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #334155; /* Même fond bleu/gris foncé */
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* La carte blanche centrale */
+.registerCard {
+  width: 700px;
+  background-color: #f1f5f9; /* Fond très clair de la maquette */
+  border-radius: 12px;
+  padding: 40px 50px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Alignement Logo + Titre */
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.register-logo {
+  height: 65px;
+  width: auto;
+  margin-bottom: 15px;
+}
+
+.logo-container h2 {
+  margin: 0;
+  color: #000000;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+/* Formulaire principal */
+.registerCard form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Conteneur des deux colonnes (Côte à côte) */
+.form-columns {
+  display: flex;
+  width: 100%;
+  gap: 40px; /* Espace entre la colonne gauche et droite */
+  margin-bottom: 35px;
+}
+
+/* Chaque colonne prend 50% de l'espace disponible */
+.form1-side, 
+.form2-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Espace vertical entre les groupes d'inputs */
+}
+
+/* Structure Label + Input */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.registerCard label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #000000;
+  text-align: left;
+}
+
+/* Style des champs de saisie (Inputs) */
+.registerCard input {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  background-color: #dbdbdb; /* Gris identique à la page login */
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #334155;
+  box-sizing: border-box;
+}
+
+.registerCard input::placeholder {
+  color: #757575;
+}
+
+.registerCard input:focus {
+  outline: 2px solid #3b82f6;
+}
+
+/* Bouton S'inscrire */
+#inscrire {
+  background-color: #3b82f6; /* Bleu identique au bouton Login */
+  color: white;
+  border: none;
+  padding: 12px 36px;
+  border-radius: 6px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#inscrire:hover {
+  background-color: #2563eb;
+}

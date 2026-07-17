@@ -1,0 +1,138 @@
+/* Layout Applicatif Global */
+.dashboard-layout {
+  display: flex;
+  background-color: #ecf1f4; /* Fond gris clair uniforme */
+  min-height: 100vh;
+}
+
+.main-window {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Zone principale de contenu */
+.mission-content {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Titre "Mission" centré */
+.mission-title {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 35px 0;
+}
+
+/* Grille principale à deux colonnes */
+.mission-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Deux colonnes de largeur égale */
+  gap: 40px;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* --- COLONNE DE GAUCHE : LA CARTE --- */
+.map-container-box {
+  background-color: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+  min-height: 480px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.map-placeholder {
+  text-align: center;
+}
+
+.map-placeholder p {
+  margin: 4px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+/* --- COLONNE DE DROITE : LE FORMULAIRE --- */
+.details-card-box {
+  background-color: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+  padding: 50px 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mission-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Espacement vertical régulier */
+}
+
+.mission-form-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mission-form-group label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #000000;
+  max-width: 180px;
+  line-height: 1.2;
+}
+
+/* Inputs gris désactivés conformes à la maquette */
+.mission-form-group input {
+  width: 200px;
+  padding: 12px;
+  border: none;
+  background-color: #e2e8f0; /* Fond gris clair */
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #475569;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Le champ Prix est plus court dans la maquette */
+.price-group input {
+  width: 130px;
+}
+
+/* Conteneur et Bouton de Validation */
+.mission-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+.btn-validate {
+  background-color: #009639; /* Vert de votre charte */
+  color: #ffffff;
+  border: none;
+  padding: 10px 35px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-validate:hover {
+  background-color: #007d2f;
+}
