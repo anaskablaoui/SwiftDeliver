@@ -4,17 +4,35 @@ const db = require('../models')
 const { validationToken } = require('../middleware/authMiddleware')
 const {validateRole} = require('../middleware/roleMiddleware')
 const bcrypt = require('bcrypt')
-const { where } = require('sequelize')
+const { Op } = require('sequelize')
 // all of this is admin needs
 
 router.get('/', validationToken, async (req, res) => {
     try {
+        const { search, status } = req.query
+
+        const livreurWhere = {}
+        if (status) {
+            livreurWhere.statut = status
+        }
+
+        const userInclude = {
+            model: db.User,
+            required: false
+        }
+        if (search) {
+            userInclude.where = {
+                [Op.or]: [
+                    { nom: { [Op.like]: `%${search}%` } },
+                    { prenom: { [Op.like]: `%${search}%` } }
+                ]
+            }
+            userInclude.required = true
+        }
+
         const listOfLivreur = await db.Livreur.findAll({
-            include:[
-                {
-                    model:db.User
-                 }
-            ]
+            where: livreurWhere,
+            include: [userInclude]
         })
         res.json(listOfLivreur)
     } catch (error) {
@@ -88,7 +106,7 @@ router.get('/assignement',validationToken, async (req,res)=>{
     try{
         const listOfLivreur = await db.commande.findAll({
             where:{
-                Statut:"disponible"
+                Statut:"disponible",
             },
             include:[
                 {
@@ -105,6 +123,7 @@ router.get('/assignement',validationToken, async (req,res)=>{
         })
     }
 })
+
 
 
 module.exports =  router

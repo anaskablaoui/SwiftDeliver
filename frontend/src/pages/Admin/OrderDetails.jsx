@@ -64,7 +64,7 @@ function NewOrder() {
   
   return (
     <div className="dashboard-layout">
-        
+      
       <Sidebar role="admin" />
       
       <div className="main-window">

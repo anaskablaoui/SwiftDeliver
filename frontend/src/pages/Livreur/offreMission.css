@@ -1,0 +1,117 @@
+/* Layout Applicatif Global */
+.dashboard-layout {
+  display: flex;
+  background-color: #ecf1f4; /* Fond gris clair uniforme */
+  min-height: 100vh;
+}
+
+.main-window {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Zone principale de contenu */
+.offers-content {
+  padding: 40px;
+  padding-top: calc(70px + 40px); /* Clears the fixed 70px header */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.offers-title {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #000000;
+  margin: 0 0 35px 0;
+}
+
+/* Grille des cartes d'offres */
+.offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 30px;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* --- CARTE D'OFFRE --- */
+.offer-card {
+  background-color: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  padding: 24px 26px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.offer-date {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.offer-name {
+  margin: 6px 0 4px 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+.offer-detail {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+/* Boutons d'action */
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.offer-btn {
+  width: 100%;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.offer-btn-accept {
+  background-color: #009639; /* Vert de la charte */
+  color: #ffffff;
+}
+
+.offer-btn-accept:hover {
+  background-color: #007d2f;
+}
+
+.offer-btn-delete {
+  background-color: #ef4444; /* Rouge cohérent avec le bouton logout */
+  color: #ffffff;
+}
+
+.offer-btn-delete:hover {
+  background-color: #dc2626;
+}

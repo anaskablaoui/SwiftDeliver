@@ -1,9 +1,18 @@
 const db = require('../models')
 
-const getCommandeService = async (where)=>{
+const getCommandeService = async (where,query)=>{
+    let status = {}
+    if(query.status){
+        status={
+            Statut:query.status
+        }
+    }
     try{
         const commandeList= await db.commande.findAll({
-        where,
+        where:{
+            ...where,
+            ...status
+        },
         include:[
             {
                 model: db.User,

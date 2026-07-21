@@ -19,6 +19,7 @@ import LivreurDashboard from './pages/Livreur/Dashboard'
 import MyDeliveries from './pages/Livreur/MyDeliveries'
 import DeliveryDetails from './pages/Livreur/DeliveryDetails'
 import Mission from './pages/Livreur/Mission'
+import MissionOffers from './pages/Livreur/offreMission'
 
 // Admin Pages
 import AdminDashboard from './pages/Admin/Dashboard'
@@ -50,6 +51,7 @@ function App() {
         <Route path='/livreur/deliveries' element={<ProtectedRoute allowedRole="livreur"><MyDeliveries /></ProtectedRoute>} />
         <Route path='/livreur/delivery/:id' element={<ProtectedRoute allowedRole="livreur"><DeliveryDetails /></ProtectedRoute>} />
         <Route path='/livreur/Mission/:id' element={<ProtectedRoute allowedRole="livreur"><Mission/></ProtectedRoute>}/>
+        <Route path='/livreur/offre/Mission' element={<ProtectedRoute allowedRole="livreur"> <MissionOffers/> </ProtectedRoute>}/>
 
         {/* Admin Pages */}
         <Route path='/admin/dashboard' element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />

@@ -1,17 +1,31 @@
 const express = require('express')
 const router = express.Router()
 const db = require('../models')
+const { Op } = require('sequelize')
 const { validationToken } = require('../middleware/authMiddleware')
 const {validateRole} = require('../middleware/roleMiddleware')
 
-//this is admin's needs 
+//this is admin's needs
 
 router.get('/', validationToken,validateRole('admin'), async (req,res)=>{
     try {
+        const { search, status } = req.query
+
+        const clientWhere = {
+            role: "client"
+        }
+        if (search) {
+            clientWhere[Op.or] = [
+                { nom: { [Op.like]: `%${search}%` } },
+                { prenom: { [Op.like]: `%${search}%` } }
+            ]
+        }
+        if (status) {
+            clientWhere.is_active = status === 'actif'
+        }
+
         const listOfClient = await db.User.findAll({
-            where:{
-                role:"client",
-            }
+            where: clientWhere
         })
         res.json(listOfClient)
     } catch(error){

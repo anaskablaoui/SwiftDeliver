@@ -6,8 +6,10 @@ const { validationToken } = require('../middleware/authMiddleware')
 const {validateRole} = require('../middleware/roleMiddleware')
 const {getCommande} = require('../controllers/commandesController')
 const {getCommandeWhere} = require('../services/commandeFilterService')
+const {similarity} = require('../services/missionService')
 
 router.get('/', validationToken, getCommande);
+
 router.get('/:id', validationToken, async (req,res)=>{
     
     console.log(req.params.id)
@@ -57,7 +59,8 @@ router.post('/', validationToken, async (req, res) => {
             prixLivraison: payload.prixLivraison ?? (payload.distanceKM ? Number(payload.distanceKM) * 5 : 0),
             mode_paiement: payload.mode_paiement || 'cash',
             Statut: payload.Statut || 'en_attente',
-            client_id: payload.client_id || payload.clientId || req.user?.id,
+            client_id:  req.user?.id,
+            codePostal: payload.codePostal
         };
 
         if (!commandeData.client_id) {
@@ -67,8 +70,30 @@ router.post('/', validationToken, async (req, res) => {
             }
             commandeData.client_id = client.id;
         }
-
+        
         const createdCommande = await db.commande.create(commandeData);
+        const livreur = await db.Livreur.findAll()
+        console.log("Client:", payload.codePostal);
+
+        for(const l of livreur){
+            console.log("Livreur:", l.geoOcpation);
+console.log("Equal?", payload.codePostal === l.geoOcpation);
+console.log("Score:", similarity(String(payload.codePostal), String(l.geoOcpation)));
+             const score = similarity(String(payload.codePostal), String(l.geoOcpation));
+            
+    console.log({
+        client: payload.codePostal,
+        livreur: l.geoOcpation,
+        score
+    });
+            if(similarity(String(payload.codePostal), String(l.geoOcpation))>=1){
+                 await db.mission.create({
+                    livreur_id:l.id,
+                    commande_id:createdCommande.id
+                })
+            }
+        }
+
         console.log("it worked")
         res.status(201).json(createdCommande);
     } catch (err) {

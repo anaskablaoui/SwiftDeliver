@@ -1,29 +1,43 @@
 const db = require('../models');
+const bcrypt = require('bcrypt');
 
 const fakeUsers = [
-  { email: 'amina.benali@example.com', password_hash: 'hash_amina', role: 'client', nom: 'Benali', prenom: 'Amina', telephone: '0601010101', photo: 'https://i.pravatar.cc/150?img=1', is_active: true },
-  { email: 'youssef.martin@example.com', password_hash: 'hash_youssef', role: 'client', nom: 'Martin', prenom: 'Youssef', telephone: '0611121314', photo: 'https://i.pravatar.cc/150?img=2', is_active: true },
-  { email: 'sarah.ouaaz@example.com', password_hash: 'hash_sarah', role: 'client', nom: 'Ouaaz', prenom: 'Sarah', telephone: '0622232425', photo: 'https://i.pravatar.cc/150?img=3', is_active: true },
-  { email: 'hassan.karimi@example.com', password_hash: 'hash_hassan', role: 'livreur', nom: 'Karimi', prenom: 'Hassan', telephone: '0633343536', photo: 'https://i.pravatar.cc/150?img=4', is_active: true },
-  { email: 'maria.bernard@example.com', password_hash: 'hash_maria', role: 'livreur', nom: 'Bernard', prenom: 'Maria', telephone: '0644454647', photo: 'https://i.pravatar.cc/150?img=5', is_active: true },
-  { email: 'karim.essafi@example.com', password_hash: 'hash_karim', role: 'livreur', nom: 'Essafi', prenom: 'Karim', telephone: '0655565758', photo: 'https://i.pravatar.cc/150?img=6', is_active: true },
-  { email: 'nadia.lahlou@example.com', password_hash: 'hash_nadia', role: 'livreur', nom: 'Lahlou', prenom: 'Nadia', telephone: '0666676869', photo: 'https://i.pravatar.cc/150?img=7', is_active: true },
-  { email: 'zakaria.elmouden@example.com', password_hash: 'hash_zakaria', role: 'admin', nom: 'Elmouden', prenom: 'Zakaria', telephone: '0677787980', photo: 'https://i.pravatar.cc/150?img=8', is_active: true },
-  { email: 'salma.rami@example.com', password_hash: 'hash_salma', role: 'livreur', nom: 'Rami', prenom: 'Salma', telephone: '0688899091', photo: 'https://i.pravatar.cc/150?img=9', is_active: true },
-  { email: 'mehdi.bounajma@example.com', password_hash: 'hash_mehdi', role: 'client', nom: 'Bounajma', prenom: 'Mehdi', telephone: '0699909192', photo: 'https://i.pravatar.cc/150?img=10', is_active: true }
+  { email: 'amina.benali@example.com', role: 'client', nom: 'Benali', prenom: 'Amina', telephone: '0601010101', photo: 'https://i.pravatar.cc/150?img=1', is_active: true },
+  { email: 'youssef.martin@example.com', role: 'client', nom: 'Martin', prenom: 'Youssef', telephone: '0611121314', photo: 'https://i.pravatar.cc/150?img=2', is_active: true },
+  { email: 'sarah.ouaaz@example.com', role: 'client', nom: 'Ouaaz', prenom: 'Sarah', telephone: '0622232425', photo: 'https://i.pravatar.cc/150?img=3', is_active: true },
+  { email: 'hassan.karimi@example.com', role: 'livreur', nom: 'Karimi', prenom: 'Hassan', telephone: '0633343536', photo: 'https://i.pravatar.cc/150?img=4', is_active: true },
+  { email: 'maria.bernard@example.com', role: 'livreur', nom: 'Bernard', prenom: 'Maria', telephone: '0644454647', photo: 'https://i.pravatar.cc/150?img=5', is_active: true },
+  { email: 'karim.essafi@example.com', role: 'livreur', nom: 'Essafi', prenom: 'Karim', telephone: '0655565758', photo: 'https://i.pravatar.cc/150?img=6', is_active: true },
+  { email: 'nadia.lahlou@example.com', role: 'livreur', nom: 'Lahlou', prenom: 'Nadia', telephone: '0666676869', photo: 'https://i.pravatar.cc/150?img=7', is_active: true },
+  { email: 'zakaria.elmouden@example.com', role: 'admin', nom: 'Elmouden', prenom: 'Zakaria', telephone: '0677787980', photo: 'https://i.pravatar.cc/150?img=8', is_active: true },
+  { email: 'salma.rami@example.com', role: 'livreur', nom: 'Rami', prenom: 'Salma', telephone: '0688899091', photo: 'https://i.pravatar.cc/150?img=9', is_active: true },
+  { email: 'mehdi.bounajma@example.com', role: 'client', nom: 'Bounajma', prenom: 'Mehdi', telephone: '0699909192', photo: 'https://i.pravatar.cc/150?img=10', is_active: true }
+];
+
+const fakeCodePostals = [
+  { code: 20000, nom: 'Casablanca' },
+  { code: 30000, nom: 'Rabat' },
+  { code: 90000, nom: 'Tanger' },
+  { code: 40000, nom: 'Fès' },
+  { code: 40000, nom: 'Meknès' },
+  { code: 80000, nom: 'Marrakech' },
+  { code: 60000, nom: 'Agadir' },
+  { code: 25000, nom: 'Kenitra' },
+  { code: 24000, nom: 'El Jadida' },
+  { code: 45000, nom: 'Oujda' }
 ];
 
 const fakeLivreurs = [
-  { user_id: 4, type_vehicule: 'moto', statut: 'disponible', total_livraison: 12 },
-  { user_id: 5, type_vehicule: 'voiture', statut: 'occupe', total_livraison: 8 },
-  { user_id: 6, type_vehicule: 'velo', statut: 'disponible', total_livraison: 4 },
-  { user_id: 7, type_vehicule: 'moto', statut: 'disponible', total_livraison: 15 },
-  { user_id: 8, type_vehicule: 'voiture', statut: 'inactif', total_livraison: 2 },
-  { user_id: 9, type_vehicule: 'moto', statut: 'disponible', total_livraison: 19 },
-  { user_id: 10, type_vehicule: 'velo', statut: 'occupe', total_livraison: 6 },
-  { user_id: 1, type_vehicule: 'moto', statut: 'disponible', total_livraison: 11 },
-  { user_id: 2, type_vehicule: 'voiture', statut: 'disponible', total_livraison: 7 },
-  { user_id: 3, type_vehicule: 'velo', statut: 'occupe', total_livraison: 5 }
+  { user_id: 4, type_vehicule: 'moto', statut: 'disponible', total_livraison: 12, geoOcpation: 20000 },
+  { user_id: 5, type_vehicule: 'voiture', statut: 'occupe', total_livraison: 8, geoOcpation: 30000 },
+  { user_id: 6, type_vehicule: 'velo', statut: 'disponible', total_livraison: 4, geoOcpation: 90000 },
+  { user_id: 7, type_vehicule: 'moto', statut: 'disponible', total_livraison: 15, geoOcpation: 40000 },
+  { user_id: 8, type_vehicule: 'voiture', statut: 'inactif', total_livraison: 2, geoOcpation: 80000 },
+  { user_id: 9, type_vehicule: 'moto', statut: 'disponible', total_livraison: 19, geoOcpation: 60000 },
+  { user_id: 10, type_vehicule: 'velo', statut: 'occupe', total_livraison: 6, geoOcpation: 25000 },
+  { user_id: 1, type_vehicule: 'moto', statut: 'disponible', total_livraison: 11, geoOcpation: 40000 },
+  { user_id: 2, type_vehicule: 'voiture', statut: 'disponible', total_livraison: 7, geoOcpation: 30000 },
+  { user_id: 3, type_vehicule: 'velo', statut: 'occupe', total_livraison: 5, geoOcpation: 20000 }
 ];
 
 const fakeCommandes = [
@@ -76,7 +90,13 @@ async function seed() {
       process.exit(0);
     }
 
-    const users = await db.User.bulkCreate(fakeUsers);
+    const passwordHash = await bcrypt.hash('password123', 10);
+    const users = fakeUsers.map((user) => ({
+      ...user,
+      password_hash: passwordHash,
+    }));
+    await db.User.bulkCreate(users);
+    await db.codePostal.bulkCreate(fakeCodePostals);
     const livreurs = await db.Livreur.bulkCreate(fakeLivreurs);
     const commandes = await db.commande.bulkCreate(fakeCommandes);
     const historiques = await db.statutHistorique.bulkCreate(fakeHistoriques);

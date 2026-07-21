@@ -23,8 +23,17 @@ module.exports = (sequelize,DataTypes)=>
         Livreur.belongsTo(models.User,{
             foreignKey:'user_id',
             allowNull:false
+        });
+        Livreur.belongsTo(models.codePostal,{
+            foreignKey:{
+                name:'geoOcpation',
+                allowNull:false,
+            },
+            as : 'codePostal'
         })
     }
+
+    
 
     return Livreur;
 }

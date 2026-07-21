@@ -1,4 +1,5 @@
 const mysql = require('mysql2/promise');
+const bcrypt = require('bcrypt');
 
 const connectionConfig = {
   host: 'localhost',
@@ -15,6 +16,7 @@ async function seed() {
   const conn = await mysql.createConnection(connectionConfig);
   const now = new Date();
   const nowSql = fmt(now);
+  const passwordHash = await bcrypt.hash('password123', 10);
 
   try {
     await conn.query('SET FOREIGN_KEY_CHECKS = 0');
@@ -30,16 +32,16 @@ async function seed() {
     await conn.query('ALTER TABLE settings AUTO_INCREMENT = 1');
 
     const users = [
-      [1, 'amina.benali@example.com', 'hash_amina', 'client', 'Benali', 'Amina', '0601010101', 'https://i.pravatar.cc/150?img=1', 1, nowSql, nowSql, nowSql],
-      [2, 'youssef.martin@example.com', 'hash_youssef', 'client', 'Martin', 'Youssef', '0611121314', 'https://i.pravatar.cc/150?img=2', 1, nowSql, nowSql, nowSql],
-      [3, 'sarah.ouaaz@example.com', 'hash_sarah', 'client', 'Ouaaz', 'Sarah', '0622232425', 'https://i.pravatar.cc/150?img=3', 1, nowSql, nowSql, nowSql],
-      [4, 'hassan.karimi@example.com', 'hash_hassan', 'livreur', 'Karimi', 'Hassan', '0633343536', 'https://i.pravatar.cc/150?img=4', 1, nowSql, nowSql, nowSql],
-      [5, 'maria.bernard@example.com', 'hash_maria', 'livreur', 'Bernard', 'Maria', '0644454647', 'https://i.pravatar.cc/150?img=5', 1, nowSql, nowSql, nowSql],
-      [6, 'karim.essafi@example.com', 'hash_karim', 'livreur', 'Essafi', 'Karim', '0655565758', 'https://i.pravatar.cc/150?img=6', 1, nowSql, nowSql, nowSql],
-      [7, 'nadia.lahlou@example.com', 'hash_nadia', 'livreur', 'Lahlou', 'Nadia', '0666676869', 'https://i.pravatar.cc/150?img=7', 1, nowSql, nowSql, nowSql],
-      [8, 'zakaria.elmouden@example.com', 'hash_zakaria', 'admin', 'Elmouden', 'Zakaria', '0677787980', 'https://i.pravatar.cc/150?img=8', 1, nowSql, nowSql, nowSql],
-      [9, 'salma.rami@example.com', 'hash_salma', 'livreur', 'Rami', 'Salma', '0688899091', 'https://i.pravatar.cc/150?img=9', 1, nowSql, nowSql, nowSql],
-      [10, 'mehdi.bounajma@example.com', 'hash_mehdi', 'client', 'Bounajma', 'Mehdi', '0699909192', 'https://i.pravatar.cc/150?img=10', 1, nowSql, nowSql, nowSql],
+      [1, 'amina.benali@example.com', passwordHash, 'client', 'Benali', 'Amina', '0601010101', 'https://i.pravatar.cc/150?img=1', 1, nowSql, nowSql, nowSql],
+      [2, 'youssef.martin@example.com', passwordHash, 'client', 'Martin', 'Youssef', '0611121314', 'https://i.pravatar.cc/150?img=2', 1, nowSql, nowSql, nowSql],
+      [3, 'sarah.ouaaz@example.com', passwordHash, 'client', 'Ouaaz', 'Sarah', '0622232425', 'https://i.pravatar.cc/150?img=3', 1, nowSql, nowSql, nowSql],
+      [4, 'hassan.karimi@example.com', passwordHash, 'livreur', 'Karimi', 'Hassan', '0633343536', 'https://i.pravatar.cc/150?img=4', 1, nowSql, nowSql, nowSql],
+      [5, 'maria.bernard@example.com', passwordHash, 'livreur', 'Bernard', 'Maria', '0644454647', 'https://i.pravatar.cc/150?img=5', 1, nowSql, nowSql, nowSql],
+      [6, 'karim.essafi@example.com', passwordHash, 'livreur', 'Essafi', 'Karim', '0655565758', 'https://i.pravatar.cc/150?img=6', 1, nowSql, nowSql, nowSql],
+      [7, 'nadia.lahlou@example.com', passwordHash, 'livreur', 'Lahlou', 'Nadia', '0666676869', 'https://i.pravatar.cc/150?img=7', 1, nowSql, nowSql, nowSql],
+      [8, 'zakaria.elmouden@example.com', passwordHash, 'admin', 'Elmouden', 'Zakaria', '0677787980', 'https://i.pravatar.cc/150?img=8', 1, nowSql, nowSql, nowSql],
+      [9, 'salma.rami@example.com', passwordHash, 'livreur', 'Rami', 'Salma', '0688899091', 'https://i.pravatar.cc/150?img=9', 1, nowSql, nowSql, nowSql],
+      [10, 'mehdi.bounajma@example.com', passwordHash, 'client', 'Bounajma', 'Mehdi', '0699909192', 'https://i.pravatar.cc/150?img=10', 1, nowSql, nowSql, nowSql],
     ];
 
     await conn.query(

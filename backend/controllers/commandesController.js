@@ -9,7 +9,7 @@ const getCommande = async(req,res)=>{
     console.log("Controller executed");
     //console.log(req.user);
     const where = await getCommandeWhere(req.user)
-    const listOfCommandes = await getCommandeService(where)
+    const listOfCommandes = await getCommandeService(where,req.query)
     if(listOfCommandes)
     {
         res.json(listOfCommandes)

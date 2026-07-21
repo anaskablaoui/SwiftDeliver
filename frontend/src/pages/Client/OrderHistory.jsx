@@ -6,22 +6,32 @@ import axios from 'axios'
 import { useEffect, useState} from "react";
 function OrderHistory() {
   // Données fictives pour remplir le tableau comme sur l'image
+  const [search,setSearch] = useState("")
+  const [status,setStatus] = useState("")
   const [listOfOrders,setListOfOrders]= useState([])
   console.log(sessionStorage.getItem("accesstoken"))
- useEffect(() => {
-    axios.get("http://localhost:3000/api/commandes",
-        {
-          headers:{
-            accessToken:sessionStorage.getItem('accesstoken')
-          }
-        })
-        .then((response) => {
-            console.log(response.data);
-            console.log(Array.isArray(response.data));
+useEffect(() => {
+
+    const timer = setTimeout(() => {
+
+        axios.get("http://localhost:3000/api/commandes", {
+            params: {
+                search: search,
+                status: status
+            },
+            headers: {
+                accessToken: sessionStorage.getItem("accesstoken")
+            }
+        }).then((response) => {
             setListOfOrders(response.data);
-        }
-      );
-}, []);
+        });
+
+    }, 500);
+
+    return () => clearTimeout(timer);
+
+}, [search, status]);
+
 
   return (
     
@@ -40,11 +50,17 @@ function OrderHistory() {
             </div>
             <div className="filter-group">
               <label>status</label>
-              <select className="filter-select">
-                <option>selectionner statut</option>
-                <option>livree</option>
-                <option>en cours</option>
-              </select>
+              <select className="filter-select"
+              value={status}
+              onChange={(e)=>setStatus(e.target.value)}>
+                <option value="">selectionner statut</option>
+                <option value="en_attente">en_attente</option>
+                <option value="assignee">assignee</option>
+                <option value="en_retrait">en_retrait</option>
+                <option value="recuperee">recuperee</option>
+                <option value="livree">livree</option>
+                <option value="annulee">annulee</option>
+              </select> 
             </div>
           </div>
 

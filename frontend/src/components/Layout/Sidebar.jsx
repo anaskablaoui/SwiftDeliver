@@ -27,6 +27,7 @@ function Sidebar({ role }) {
                     <ul>
                         <li><a href="/livreur">Dashboard</a></li>
                         <li><a href="/livreur/deliveries">mes livraison</a></li>
+                        <li><a href="/livreur/offre/Mission">offre</a></li>
                         <li><a href="#">profile</a></li>
                     </ul>
                 </nav>

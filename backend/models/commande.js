@@ -5,7 +5,6 @@ module.exports = (sequelize,DataType) => {
             autoIncrement:true,
             primaryKey:true,
         },
-        
         type_commande:{
             type:DataType.ENUM( 'restaurant', 'pharmacie', 'colis', 'courses'),
         },
@@ -77,7 +76,11 @@ module.exports = (sequelize,DataType) => {
         delivered_at:{
                 type:DataType.DATE,
                 allowNull:true,
-            }
+            },
+        codePostal:{
+            type:DataType.STRING,
+            allowNull:true
+        }
 
     })
 

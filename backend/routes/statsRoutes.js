@@ -5,19 +5,25 @@ const { Op } = require('sequelize')
 const { validationToken } = require('../middleware/authMiddleware')
 const {getStats} = require('../services/getStats');
 const {getCommandeWhere} = require('../services/commandeFilterService');
+const {getCommandeService} = require('../services/commandeService')
 
-router.get('/dashboard', validationToken,async (req,res)=>{
-    const stats=await getStats(req.user)
-    if(stats){
-        res.json(stats)
-    }
-    else{
-        res.status(400).json({
-            erreur:"erreur pas de statistique recupere"
-        })
-    }
-})
+const { getDashboard } = require("../services/dashboardService");
 
+router.get("/dashboard", validationToken, async (req, res) => {
+    try {
+
+        const dashboard = await getDashboard(req.user);
+
+        res.json(dashboard);
+
+    } catch (error) {
+        console.log(error);
+
+        res.status(500).json({
+            erreur: "Erreur lors de la récupération du dashboard",
+        });
+    }
+});
 router.get('/gains-par-mois', validationToken, async (req,res)=>{
     try{
         const where = await getCommandeWhere(req.user)

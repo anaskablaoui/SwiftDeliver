@@ -10,17 +10,26 @@ function OrderHistory() {
 
   // Données fictives pour remplir le tableau comme sur l'image
 const [listOfClient , setListOfClient] = useState([])
+const [search, setSearch] = useState("")
+const [status, setStatus] = useState("")
 
-useState(()=>{
-  axios.get("http://localhost:3000/api/clients",
-  {
-    headers:{
-      accesstoken:sessionStorage.getItem("accesstoken")
-    }
-  }).then((response)=>{
-      setListOfClient(response.data)
-    })
-})
+useEffect(() => {
+  const timer = setTimeout(() => {
+    axios.get("http://localhost:3000/api/clients", {
+      params: {
+        search: search,
+        status: status
+      },
+      headers:{
+        accessToken:sessionStorage.getItem("accesstoken")
+      }
+    }).then((response)=>{
+        setListOfClient(response.data)
+      })
+  }, 500);
+
+  return () => clearTimeout(timer);
+}, [search, status]);
 
   return (
     
@@ -34,15 +43,23 @@ useState(()=>{
           {/* Section Filtrage */}
           <div className="filter-container">
             <div className="filter-group">
-              <label>Nom de retrait</label>
-              <input type="text" placeholder="retrait" className="filter-input" />
+              <label>Nom</label>
+              <input
+                type="text"
+                placeholder="client"
+                className="filter-input"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
             </div>
             <div className="filter-group">
               <label>status</label>
-              <select className="filter-select">
-                <option>selectionner statut</option>
-                <option>livree</option>
-                <option>en cours</option>
+              <select className="filter-select"
+              value={status}
+              onChange={(e)=>setStatus(e.target.value)}>
+                <option value="">selectionner statut</option>
+                <option value="actif">actif</option>
+                <option value="inactif">inactif</option>
               </select>
             </div>
           </div>

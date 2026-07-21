@@ -1,4 +1,5 @@
 /* Layout Applicatif Global */
+
 .dashboard-layout {
   display: flex;
   background-color: #ecf1f4; /* Même arrière-plan gris très clair */
@@ -18,6 +19,15 @@
   display: flex;
   flex-direction: column;
   gap: 35px; /* Espace entre les stats et le graphique */
+  box-sizing: border-box;
+}
+
+.dashboard-page {
+  padding: 40px;
+  padding-top: calc(70px + 40px); /* Clears the fixed 70px header */
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
   box-sizing: border-box;
 }
 

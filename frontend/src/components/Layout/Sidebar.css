@@ -14,6 +14,7 @@ aside {
   box-sizing: border-box;
   box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  z-index: 200; /* Sit above the fixed header so it isn't clipped */
 }
 
 /* Common block spacing */

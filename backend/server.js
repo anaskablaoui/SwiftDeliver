@@ -17,6 +17,7 @@ const commandeRoutes = require('./routes/commandeRoutes')
 const livreurRoutes = require('./routes/livreurRoutes')
 const statsRoutes = require('./routes/statsRoutes')
 const settingsRoutes = require('./routes/settingsRoutes')
+const missionRoutes = require('./routes/missions')
 
 app.use('/api/auth', authRoutes)
 app.use('/api/commandes', commandeRoutes)
@@ -24,6 +25,7 @@ app.use('/api/livreurs', livreurRoutes)
 app.use('/api/clients', clientRoutes)
 app.use('/api/stats', statsRoutes)
 app.use('/api/settings', settingsRoutes)
+app.use('/api/mission',missionRoutes)
 
 db.sequelize.sync()
     .then(() => {

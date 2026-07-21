@@ -36,16 +36,23 @@ function LivreurManagement() {
   };
 
   useEffect(()=>{
-    console.log(sessionStorage.getItem('accesstoken/assignement'))
-    axios.get("http://localhost:3000/api/livreurs",{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    }) . then((response) =>{
-      console.log(response.data)
-      setListOfLivreur(response.data)
-    })
-  },[])
+    const timer = setTimeout(() => {
+      axios.get("http://localhost:3000/api/livreurs",{
+        params: {
+          search: searchTerm,
+          status: statusFilter
+        },
+        headers:{
+          accessToken:sessionStorage.getItem('accesstoken')
+        }
+      }) . then((response) =>{
+        console.log(response.data)
+        setListOfLivreur(response.data)
+      })
+    }, 500);
+
+    return () => clearTimeout(timer);
+  },[searchTerm, statusFilter])
   return (
     <div className="dashboard-layout">
       {/* Barre latérale pour l'admin */}
@@ -77,8 +84,8 @@ function LivreurManagement() {
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
                 <option value="">selectionner statut</option>
-                <option value="en mission">en mission</option>
                 <option value="disponible">disponible</option>
+                <option value="occupe">occupe</option>
                 <option value="inactif">inactif</option>
               </select>
             </div>

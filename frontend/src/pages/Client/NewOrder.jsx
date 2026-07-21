@@ -118,6 +118,12 @@ function NewOrder() {
                         <Field type="number" id="distance" name="distanceKM" placeholder="xx KM" />
                         <ErrorMessage name="distanceKM" component="span" className="error-msg"/>
                       </div>
+
+                      <label htmlFor="codePostal">code Postal:</label>
+                      <div className="input-with-error">
+                        <Field type="text" id="codePostal" name="codePostal" placeholder="code postal" />
+                        <ErrorMessage name="codePostal" component="span" className="error-msg"/>
+                      </div>
                     </div>
                   </div>
                 </div>
