@@ -3,10 +3,16 @@ import Header from '../../components/Layout/Header';
 import Sidebar from '../../components/Layout/Sidebar';
 import './Mission.css';
 import { useParams } from 'react-router-dom';
-import {useEffect,useState} from 'react';
+import {useEffect,useState,useRef} from 'react';
 import api from '../../services/api';
 import { Formik, Form, Field } from "formik";
+import L from 'leaflet'
+import deliveryMan from '../../assets/deliveryMan.svg'
+import endPoint from '../../assets/endPoint.svg'
+import pickupPoint from '../../assets/pickupPoint.svg'
+
 function MissionDetail() {
+
     let {id} = useParams();
 
     const [Order,setListOfOrders]= useState({})
@@ -26,6 +32,110 @@ function MissionDetail() {
   })
   };
 
+  //Map code 
+  const [coordinate,setCoordinates]=useState({
+    lagitude:null,
+    longitude:null
+  })
+  const mapRef = useRef(null);
+
+useEffect(() => {
+
+
+    const map = L.map(mapRef.current);
+
+
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            attribution: "&copy; OpenStreetMap contributors",
+        }
+    ).addTo(map);
+
+    //marqueur de livreur
+    const deliveryManIcon = L.icon({
+      iconUrl:deliveryMan,
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+      popupAnchor: [0, -40],
+      
+    })
+    const meMarker = L.marker([0, 0],{
+      icon:deliveryManIcon
+    }).addTo(map);
+    meMarker.bindPopup("Me");
+    //marqueur de retrait 
+    const pickupIcon = L.icon({
+      iconUrl:pickupPoint,
+      iconSize: [40, 40],
+    iconAnchor: [20, 40],
+    popupAnchor: [0, -40],
+    })
+    const pickupMarker = L.marker([0,0],{
+      icon:pickupIcon
+    }).addTo(map);
+    pickupMarker.bindPopup("pickup")
+    //marqueur de point de livraison
+    const endPointIcon = L.icon({
+      iconUrl:endPoint,
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+    popupAnchor: [0, -40],
+    })
+    const deliveryMarker = L.marker([0,0],{
+      icon:endPointIcon
+    }).addTo(map);
+    deliveryMarker.bindPopup("delivery")
+
+
+    map.on("click", (e) => {
+
+        setCoordinates({
+            latitude: e.latlng.lat,
+            longitude: e.latlng.lng,
+        });
+
+        marker.setLatLng(e.latlng);
+
+        console.log(e.latlng);
+
+    });
+
+    const watchId = navigator.geolocation.watchPosition(
+        (position) => {
+
+            const { latitude, longitude } = position.coords;
+
+
+            map.setView([latitude, longitude], 16);
+
+
+            meMarker.setLatLng([latitude, longitude]);
+
+            console.log(position.coords);
+
+        },
+        (error) => {
+            console.log(error);
+        },
+        {
+            enableHighAccuracy: true,
+            maximumAge: 0,
+            timeout: 5000,
+        }
+    );
+
+
+    return () => {
+        navigator.geolocation.clearWatch(watchId);
+        map.remove();
+    };
+
+}, []);
+    
+
+
+
   return (
     <div className="dashboard-layout">
       {/* Sidebar livreur active sur "mes livraison" */}
@@ -41,9 +151,12 @@ function MissionDetail() {
             
             {/* Conteneur de gauche : Emplacement de la Carte */}
             <div className="map-container-box">
-              <div className="map-placeholder">
-                <p>this is a map i</p>
-                <p>will add after</p>
+              <div className="map-placeholder" ref={mapRef}
+                  style={{
+                  height: "500px",
+                  width: "100%"
+                }}>
+                
               </div>
             </div>
 
