@@ -37,6 +37,7 @@ function MissionDetail() {
     lagitude:null,
     longitude:null
   })
+  const [address,setAddress]=useState("");
   const mapRef = useRef(null);
 
 useEffect(() => {
@@ -88,43 +89,43 @@ useEffect(() => {
     deliveryMarker.bindPopup("delivery")
 
 
-    map.on("click", (e) => {
+map.on("click", async (e) => {
 
-        setCoordinates({
-            latitude: e.latlng.lat,
-            longitude: e.latlng.lng,
-        });
+    const latitude = e.latlng.lat;
+    const longitude = e.latlng.lng;
 
-        marker.setLatLng(e.latlng);
 
-        console.log(e.latlng);
-
+    setCoordinates({
+        latitude,
+        longitude
     });
 
-    const watchId = navigator.geolocation.watchPosition(
-        (position) => {
 
-            const { latitude, longitude } = position.coords;
+    deliveryMarker.setLatLng(e.latlng);
 
 
-            map.setView([latitude, longitude], 16);
+    try {
+
+        const response = await api.post(
+            "/location/reverse",
+            {
+                latitude,
+                longitude
+            }
+        );
 
 
-            meMarker.setLatLng([latitude, longitude]);
+        setAddress(response.data.address);
 
-            console.log(position.coords);
 
-        },
-        (error) => {
-            console.log(error);
-        },
-        {
-            enableHighAccuracy: true,
-            maximumAge: 0,
-            timeout: 5000,
-        }
-    );
+    } catch(error){
 
+        console.log(error);
+
+    }
+
+
+});
 
     return () => {
         navigator.geolocation.clearWatch(watchId);
