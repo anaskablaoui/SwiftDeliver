@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../../components/Layout/Header';
 import Sidebar from '../../components/Layout/Sidebar';
 import './offreMission.css';
-import axios from 'axios';
+import api from '../../services/api';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
@@ -11,11 +11,7 @@ function MissionOffers() {
   const [offers,setOffer] = useState([])
 
   useEffect(()=>{
-    axios.get("http://localhost:3000/api/mission",{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    }).then((response)=>{
+    api.get("/mission").then((response)=>{
       console.log('test');
       console.log(response.data);
       console.log(Array.isArray(response.data));
@@ -25,11 +21,7 @@ function MissionOffers() {
 
 
   const handleAccept = (id) => {
-    axios.patch(`http://localhost:3000/api/mission/${id}/validate`, {}, {
-      headers: {
-        accessToken: sessionStorage.getItem('accesstoken')
-      }
-    }).then(() => {
+    api.patch(`/mission/${id}/validate`, {}).then(() => {
       setOffer((prev) => prev.filter((offer) => offer.id !== id));
     }).catch((error) => {
       console.log(error);
@@ -37,11 +29,7 @@ function MissionOffers() {
   };
 
   const handleDelete = (id) => {
-    axios.delete(`http://localhost:3000/api/mission/${id}/refuse`, {
-      headers: {
-        accessToken: sessionStorage.getItem('accesstoken')
-      }
-    }).then(() => {
+    api.delete(`/mission/${id}/refuse`).then(() => {
       setOffer((prev) => prev.filter((offer) => offer.id !== id));
     }).catch((error) => {
       console.log(error);

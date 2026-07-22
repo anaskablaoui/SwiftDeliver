@@ -3,7 +3,8 @@ import './Sidebar.css'
 function Sidebar({ role }) {
     let nav;
     const submit = ()=>{
-        sessionStorage.removeItem('accesstoken')
+        sessionStorage.clear()
+        
         window.location.replace('/')
     }
 
@@ -28,7 +29,7 @@ function Sidebar({ role }) {
                         <li><a href="/livreur">Dashboard</a></li>
                         <li><a href="/livreur/deliveries">mes livraison</a></li>
                         <li><a href="/livreur/offre/Mission">offre</a></li>
-                        <li><a href="#">profile</a></li>
+                        <li><a href="/livreur/profile">profile</a></li>
                     </ul>
                 </nav>
             );
@@ -43,7 +44,7 @@ function Sidebar({ role }) {
                         <li><a href="/admin/livreurs">Livreur</a></li>
                         <li><a href="/admin/clients">Client</a></li>
                         <li><a href="/admin/settings">Settings</a></li>
-                        <li><a href="#">Profile</a></li>
+                        <li><a href="/admin/profile">Profile</a></li>
                     </ul>
                 </nav>
             );

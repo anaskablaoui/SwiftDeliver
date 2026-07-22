@@ -12,7 +12,7 @@ const validationToken = (req, res, next) => {
     }
 
     try {
-        const validToken = verify(accessToken, "important");
+        const validToken = verify(accessToken, process.env.JWT_ACCESS_SECRET);
         console.log("Token:", accessToken);
         req.user = validToken;
         console.log('next executed')

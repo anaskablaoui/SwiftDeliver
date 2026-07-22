@@ -2,8 +2,12 @@ import React from "react";
 import Header from "../../components/Layout/Header";
 import Sidebar from "../../components/Layout/Sidebar";
 import "./OrderHistory.css"; // N'oubliez pas d'importer le CSS
-import axios from 'axios'
+import api from '../../services/api'
 import { useEffect,useState } from "react";
+import Pagination from "../../components/Common/Pagination";
+
+const ITEMS_PER_PAGE = 10;
+
 function OrderHistory() {
   //fonction de suppression
   
@@ -12,24 +16,27 @@ function OrderHistory() {
 const [listOfClient , setListOfClient] = useState([])
 const [search, setSearch] = useState("")
 const [status, setStatus] = useState("")
+const [currentPage, setCurrentPage] = useState(1)
 
 useEffect(() => {
   const timer = setTimeout(() => {
-    axios.get("http://localhost:3000/api/clients", {
+    api.get("/clients", {
       params: {
         search: search,
-        status: status
-      },
-      headers:{
-        accessToken:sessionStorage.getItem("accesstoken")
       }
     }).then((response)=>{
         setListOfClient(response.data)
+        setCurrentPage(1);
       })
   }, 500);
 
   return () => clearTimeout(timer);
-}, [search, status]);
+}, [search]);
+
+const paginatedClients = listOfClient.slice(
+  (currentPage - 1) * ITEMS_PER_PAGE,
+  currentPage * ITEMS_PER_PAGE
+);
 
   return (
     
@@ -52,16 +59,6 @@ useEffect(() => {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <div className="filter-group">
-              <label>status</label>
-              <select className="filter-select"
-              value={status}
-              onChange={(e)=>setStatus(e.target.value)}>
-                <option value="">selectionner statut</option>
-                <option value="actif">actif</option>
-                <option value="inactif">inactif</option>
-              </select>
-            </div>
           </div>
 
           {/* Section Tableau */}
@@ -78,7 +75,7 @@ useEffect(() => {
                 </tr>
               </thead>
               <tbody>
-                {listOfClient.map((order, index) => (
+                {paginatedClients.map((order, index) => (
                   <tr key={index}>
                     <td><img src={order.photo} alt="" /></td>
                     <td>{order.nom} {order.prenom}</td>
@@ -96,7 +93,12 @@ useEffect(() => {
               </tbody>
             </table>
 
-            
+            <Pagination
+              currentPage={currentPage}
+              totalItems={listOfClient.length}
+              itemsPerPage={ITEMS_PER_PAGE}
+              onPageChange={setCurrentPage}
+            />
           </div>
         </main>
       </div>

@@ -12,7 +12,7 @@ import ClientDashboard from './pages/Client/Dashboard'
 import NewOrder from './pages/Client/NewOrder'
 import OrderDetails from './pages/Client/OrderDetails'
 import OrderHistory from './pages/Client/OrderHistory'
-import Profile from './pages/Client/Profile'
+import CProfile from './pages/Client/CProfile'
 
 // Livreur Pages
 import LivreurDashboard from './pages/Livreur/Dashboard'
@@ -20,6 +20,7 @@ import MyDeliveries from './pages/Livreur/MyDeliveries'
 import DeliveryDetails from './pages/Livreur/DeliveryDetails'
 import Mission from './pages/Livreur/Mission'
 import MissionOffers from './pages/Livreur/offreMission'
+import LProfile from './pages/Livreur/LProfile' 
 
 // Admin Pages
 import AdminDashboard from './pages/Admin/Dashboard'
@@ -30,6 +31,7 @@ import Settings from './pages/Admin/Settings'
 import OrderDetailsAdmin from './pages/Admin/OrderDetails'
 import NewOrderAdmin from './pages/Admin/NewOrder'
 import NewLivreur from './pages/Admin/newLivreur'
+import AProfile from './pages/Admin/AProfile'
 
 function App() {
   return (
@@ -44,7 +46,7 @@ function App() {
         <Route path='/client/new-order' element={<ProtectedRoute allowedRole="client"><NewOrder /></ProtectedRoute>} />
         <Route path='/client/order/:id' element={<ProtectedRoute allowedRole="client"><OrderDetails /></ProtectedRoute>} />
         <Route path='/client/order-history' element={<ProtectedRoute allowedRole="client"><OrderHistory /></ProtectedRoute>} />
-        <Route path='/client/profile' element={<ProtectedRoute allowedRole="client"><Profile /></ProtectedRoute>} />
+        <Route path='/client/profile' element={<ProtectedRoute allowedRole="client"><CProfile /></ProtectedRoute>} />
 
         {/* Livreur Pages */}
         <Route path='/livreur/dashboard' element={<ProtectedRoute allowedRole="livreur"><LivreurDashboard /></ProtectedRoute>} />
@@ -52,6 +54,7 @@ function App() {
         <Route path='/livreur/delivery/:id' element={<ProtectedRoute allowedRole="livreur"><DeliveryDetails /></ProtectedRoute>} />
         <Route path='/livreur/Mission/:id' element={<ProtectedRoute allowedRole="livreur"><Mission/></ProtectedRoute>}/>
         <Route path='/livreur/offre/Mission' element={<ProtectedRoute allowedRole="livreur"> <MissionOffers/> </ProtectedRoute>}/>
+        <Route path='/livreur/profile' element={<ProtectedRoute allowedRole="livreur"><LProfile /></ProtectedRoute>} />
 
         {/* Admin Pages */}
         <Route path='/admin/dashboard' element={<ProtectedRoute allowedRole="admin"><AdminDashboard /></ProtectedRoute>} />
@@ -62,6 +65,7 @@ function App() {
         <Route path='/admin/settings' element={<ProtectedRoute allowedRole="admin"><Settings /></ProtectedRoute>} />
         <Route path='/admin/order/:id' element={<ProtectedRoute allowedRole="admin"><OrderDetailsAdmin/></ProtectedRoute>} ></Route>
         <Route path='/admin/new-order' element={<ProtectedRoute allowedRole="admin"><NewOrderAdmin/></ProtectedRoute>}></Route>
+        <Route path='/admin/profile' element={<ProtectedRoute allowedRole="admin"><AProfile /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   )

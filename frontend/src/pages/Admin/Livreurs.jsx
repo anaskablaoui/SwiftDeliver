@@ -2,17 +2,16 @@ import React from 'react';
 import Header from '../../components/Layout/Header';
 import Sidebar from '../../components/Layout/Sidebar';
 import './Livreur.css';
-import axios from 'axios';
+import api from '../../services/api';
 import { useEffect, useState } from "react";
+import Pagination from "../../components/Common/Pagination";
+
+const ITEMS_PER_PAGE = 10;
 
 function LivreurManagement() {
 
   const submiting = (data)=>{
-    axios.put('http://localhost:3000/api/commandes',data,{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    }).then((response)=>{
+    api.put('/commandes', data).then((response)=>{
       console.log('it worked')
       window.location.reload();
     })
@@ -22,13 +21,10 @@ function LivreurManagement() {
 
   // Exemple de données fictives basées sur votre maquette
   const [listOfLivreur,setListOfLivreur] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
 
   const deleting = (id) => {
-    axios.delete(`http://localhost:3000/api/livreurs/${id}`, {
-      headers: {
-        accessToken: sessionStorage.getItem('accesstoken')
-      }
-    }).then(() => {
+    api.delete(`/livreurs/${id}`).then(() => {
       window.location.reload();
     }).catch((error) => {
       console.error('Erreur lors de la suppression du livreur :', error);
@@ -37,22 +33,25 @@ function LivreurManagement() {
 
   useEffect(()=>{
     const timer = setTimeout(() => {
-      axios.get("http://localhost:3000/api/livreurs",{
+      api.get("/livreurs",{
         params: {
           search: searchTerm,
           status: statusFilter
-        },
-        headers:{
-          accessToken:sessionStorage.getItem('accesstoken')
         }
       }) . then((response) =>{
         console.log(response.data)
         setListOfLivreur(response.data)
+        setCurrentPage(1);
       })
     }, 500);
 
     return () => clearTimeout(timer);
   },[searchTerm, statusFilter])
+
+  const paginatedLivreurs = listOfLivreur.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
   return (
     <div className="dashboard-layout">
       {/* Barre latérale pour l'admin */}
@@ -107,7 +106,7 @@ function LivreurManagement() {
                 </tr>
               </thead>
               <tbody>
-                {listOfLivreur.map((livreur) => (
+                {paginatedLivreurs.map((livreur) => (
                   <tr key={livreur.id}>
                     {/* Colonne Photo avec l'icône de profil noire */}
                     <td className="td-photo">
@@ -153,6 +152,13 @@ function LivreurManagement() {
                 ))}
               </tbody>
             </table>
+
+            <Pagination
+              currentPage={currentPage}
+              totalItems={listOfLivreur.length}
+              itemsPerPage={ITEMS_PER_PAGE}
+              onPageChange={setCurrentPage}
+            />
           </div>
 
           {/* BOUTON D'AJOUT EN BAS À DROITE */}

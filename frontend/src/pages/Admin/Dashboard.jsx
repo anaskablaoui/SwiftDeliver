@@ -12,7 +12,7 @@ import {
   Tooltip
 } from 'chart.js';
 import './Dashboard.css'; // Importation du CSS
-import axios from 'axios'
+import api from '../../services/api'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
@@ -25,19 +25,11 @@ function Dashboard() {
   const [chartData, setChartData] = useState({ labels: [], data: [] })
 
   useEffect(()=>{
-    axios.get("http://localhost:3000/api/stats/dashboard",{
-      headers:{
-        accesstoken:sessionStorage.getItem('accesstoken')
-      }
-    }).then((response)=>{
-      setListOfStats(response.data)
+    api.get("/stats/dashboard").then((response)=>{
+      setListOfStats(response.data.stats)
     })
 
-    axios.get("http://localhost:3000/api/stats/gains-par-mois",{
-      headers:{
-        accesstoken:sessionStorage.getItem('accesstoken')
-      }
-    }).then((response)=>{
+    api.get("/stats/gains-par-mois").then((response)=>{
       setChartData(response.data)
     })
   }, [])

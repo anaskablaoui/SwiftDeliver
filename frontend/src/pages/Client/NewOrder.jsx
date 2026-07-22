@@ -4,7 +4,7 @@ import Sidebar from "../../components/Layout/Sidebar";
 import "./NewOrder.css"; 
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
-import axios from 'axios'
+import api from '../../services/api'
 
 function NewOrder() {
   
@@ -34,11 +34,7 @@ function NewOrder() {
 
   const onSubmit = (data) => {
     console.log('I AM TESTING =============================')
-    axios.post('http://localhost:3000/api/commandes', data,{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    }).then((response) => {
+    api.post('/commandes', data).then((response) => {
       console.log('it worked');
       window.location.reload();
     })

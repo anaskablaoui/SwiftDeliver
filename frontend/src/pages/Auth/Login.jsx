@@ -4,7 +4,7 @@ import logo from '../../assets/Gemini_Generated_Image_rrpvi6rrpvi6rrpv.png';
 import './Login.css'; // Importation du fichier CSS
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
-import axios from 'axios';
+import api from '../../services/api';
 
 function Login() {
   const initialValues = {
@@ -18,9 +18,10 @@ function Login() {
   });
 
   const onSubmit = (data) => {
-    axios.post('http://localhost:3000/api/auth/login', data).then((response) => {
-      const { token, user } = response.data;
-      sessionStorage.setItem('accesstoken', token);
+    api.post('/auth/login', data).then((response) => {
+      const { accessToken, refreshToken, user } = response.data;
+      sessionStorage.setItem('accesstoken', accessToken);
+      sessionStorage.setItem('refreshToken', refreshToken);
       sessionStorage.setItem('role', user.role);
 
       if (user.role === 'admin') {

@@ -4,19 +4,14 @@ import Sidebar from '../../components/Layout/Sidebar';
 import './Profile.css'; // Importation du CSS
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
-import axios from 'axios';
+import api from '../../services/api';
 import { useEffect, useState } from "react";
 
-function Profile() {
+function CProfile() {
 
   const [me,setMe] = useState({})
-  console.log(sessionStorage.getItem("accesstoken"))
   useEffect(()=>{
-    axios.get("http://localhost:3000/api/auth/me",{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    }).then((response)=>{
+    api.get("/auth/me").then((response)=>{
       setMe(response.data)
     })
   }, [])
@@ -36,13 +31,9 @@ function Profile() {
   });
 
   const onPasswordSubmit = (data) => {
-    axios.put('http://localhost:3000/api/auth/password', data,{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    }).then((response) => {
+    api.put('/auth/password', data).then((response) => {
       console.log('it worked');
-      
+
     })
   };
 
@@ -58,11 +49,7 @@ function Profile() {
   });
 
   const onInfoSubmit = (data) => {
-    axios.put('http://localhost:3000/api/auth/me', data,{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    }).then((response) => {
+    api.put('/auth/me', data).then((response) => {
       console.log('it worked');
       window.location.reload();
     })
@@ -175,4 +162,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default CProfile;

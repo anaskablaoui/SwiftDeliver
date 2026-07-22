@@ -4,7 +4,7 @@ import Sidebar from "../../components/Layout/Sidebar";
 import "./NewOrder.css"; 
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
-import axios from 'axios'
+import api from '../../services/api'
 import { useParams } from 'react-router-dom'
 import {useEffect,useState} from 'react'
 
@@ -13,11 +13,7 @@ function NewOrder() {
     
     const [Order,setListOfOrders]= useState({})
    useEffect(() => {
-    axios.get(`http://localhost:3000/api/commandes/${id}`,{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    })
+    api.get(`/commandes/${id}`)
         .then((response) => {
             console.log(response.data);
             console.log(Array.isArray(response.data));
@@ -38,7 +34,7 @@ function NewOrder() {
   });
 
   const onSubmit = (data) => {
-    axios.put(`http://localhost:3000/api/commandes/${id}`, data).then((response) => {
+    api.put(`/commandes/${id}`, data).then((response) => {
       console.log('it worked');
       window.location.reload();
     })

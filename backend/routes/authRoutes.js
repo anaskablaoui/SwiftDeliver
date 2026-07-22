@@ -4,9 +4,11 @@ const db = require('../models')
 const bcrypt = require('bcrypt')
 const User = require('../models/User')
 const { where } = require('sequelize')
+const UAParser = require("ua-parser-js");
 
 const { sign } = require('jsonwebtoken')
 const { validationToken } = require('../middleware/authMiddleware')
+const {refreshTokenverification} = require('../middleware/refreshTokenMiddleware')
 
 router.post('/login',async (req,res)=>{
     const {email,password} = req.body
@@ -21,7 +23,7 @@ router.post('/login',async (req,res)=>{
             message:"utilisateur inconnue"
         })
     }
-    bcrypt.compare(password,user.password_hash).then((match)=>{
+    bcrypt.compare(password,user.password_hash).then(async (match)=>{
         if(!match)
         {
             return res.status(401).json({
@@ -29,39 +31,139 @@ router.post('/login',async (req,res)=>{
             })
         }
         else{
-            const accessToken = sign({email: user.email,id:user.id,role:user.role}, "important" )
+            const accessToken = sign({id:user.id,role:user.role}, process.env.JWT_ACCESS_SECRET,
+                {
+                    expiresIn: "15m"
+                }
+            );
+            // working on jwt v2
+            const refreshToken = sign({
+                id:user.id
+            },
+            process.env.JWT_REFRESH_SECRET,
+            {
+                expiresIn:"30d"
+            }
+        )
+            const parser = new UAParser(req.headers["user-agent"]);
+            const browser = parser.getBrowser().name || "Unknown";
+            const device = parser.getDevice().type || "Desktop";
+
+            const ipAddress =req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+             await db.refreshToken.create({
+                user_id:user.id,
+                token:refreshToken,
+                expiredAt: new Date(
+                    Date.now() + 30*24*60*60*1000
+                ),
+                last_usedAt: new Date(),
+                browser:browser,
+                device:device,
+                ip_adress:ipAddress,
+                is_revoked:false,
+            });
             console.log('u logged in ')
             res.json({
-                token: accessToken,
+                accessToken,
+                refreshToken,
                 user:{
-                    email:user.email,
+
                     role:user.role,
                     id:user.id
                 }
             })
         }
 
+    }).catch((error)=>{
+        console.log(error)
+        res.status(500).json({
+            message:"erreur lors de la connexion"
+        })
     })
 
 })
 
-router.post('/logout', validationToken, (req,res)=> {
-    res.send('this is the logout page')
+router.post('/logout', async (req,res)=> {
+    const refreshToken = req.header("refreshToken");
+
+    if(!refreshToken){
+        return res.status(400).json({
+            message:"refresh token missing"
+        })
+    }
+
+    try{
+        const parser = new UAParser(req.headers["user-agent"]);
+        const [affectedCount] = await db.refreshToken.update(
+            {
+                is_revoked:true,
+            },
+            {
+                where:{
+                    token:refreshToken,
+                    device:parser.getDevice().type || "Desktop",
+                    user_id:req.user.id
+                }
+            }
+        )
+        if(affectedCount>0){
+            console.log("logout with success")
+            return res.json({
+                message:"succeded"
+            })
+        }
+        else{
+            return res.status(404).json({
+                message:"page not found"
+            })
+        }
+    }catch(error){
+        console.log(error)
+        return res.status(500).json({
+            message:"erreur lors de la deconnexion"
+        })
+    }
 })
 
-router.post('/register',(req,res) => {
+router.post('/register',async (req,res) => {
     const {nom,prenom,email,telephone,password,passwordConfirm} = req.body
-   
-    if(password === passwordConfirm)
+
+    if(password !== passwordConfirm)
     {
-        bcrypt.hash(password,10).then((hash)=>{
-            db.User.create({
-                nom:nom,
-                prenom:prenom,
-                email:email,
-                telephone:telephone,
-                password_hash:hash
+        return res.status(400).json({
+            message:"les mots de passe ne correspondent pas"
+        })
+    }
+
+    try{
+        const existingUser = await db.User.findOne({where:{email:email}})
+        if(existingUser){
+            return res.status(409).json({
+                message:"un utilisateur avec cet email existe deja"
             })
+        }
+
+        const hash = await bcrypt.hash(password,10)
+        const user = await db.User.create({
+            nom:nom,
+            prenom:prenom,
+            email:email,
+            telephone:telephone,
+            password_hash:hash
+        })
+
+        res.status(201).json({
+            message:"utilisateur cree avec succes",
+            user:{
+                id:user.id,
+                role:user.role
+            }
+        })
+    } catch(error){
+        console.log(error)
+        res.status(500).json({
+            message:"erreur lors de l'inscription"
         })
     }
 })
@@ -171,7 +273,15 @@ router.put('/password',validationToken, async (req,res)=>{
 
 })
 
-
+router.post("/refresh", (req, res, next) => {
+    console.log("===== REFRESH ROUTE =====");
+    next();
+}, refreshTokenverification, (req, res) => {
+    res.json({
+        accessToken: req.newAccessToken,
+        user: req.user
+    });
+});
 
 
 module.exports = router

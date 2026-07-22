@@ -3,7 +3,7 @@ import logo from '../../assets/Gemini_Generated_Image_rrpvi6rrpvi6rrpv.png';
 import './Register.css'; // Importation du CSS
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
-import axios from 'axios';
+import api from '../../services/api';
 
 function Register() {
   const initialValues = {
@@ -27,7 +27,7 @@ function Register() {
   });
 
   const onSubmit = (data) => {
-    axios.post('http://localhost:3000/api/auth/register', data).then((response) => {
+    api.post('/auth/register', data).then((response) => {
       console.log('it worked');
       window.location.reload();
     })

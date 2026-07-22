@@ -4,18 +4,14 @@ import Sidebar from '../../components/Layout/Sidebar';
 import './Settings.css'; // Importation du CSS
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
-import axios from 'axios';
+import api from '../../services/api';
 import {useEffect,useState} from 'react'
 
 function SystemConfig() {
   const [setting, setSetting] = useState({})
 
   useEffect(()=>{
-    axios.get('http://localhost:3000/api/settings',{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    }).then((response)=>{
+    api.get('/settings').then((response)=>{
       console.log(response.data);
       console.log(Array.isArray(response.data));
       setSetting(response.data)
@@ -27,23 +23,10 @@ function SystemConfig() {
     tarifKm: Yup.number().required("Obligatoire").positive("Doit être positive")
   });
 
-  const onSubmitPassword = (data) => {
-    axios.put('http://localhost:3000/api/settings/passwrod', data,{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    }).then((response) => {
-      console.log('it worked');
-      window.location.reload();
-    })
-  };
 
-  const onSubmitme = (data) => {
-    axios.put('http://localhost:3000/api/settings/me', data,{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    }).then((response) => {
+
+  const onSubmit = (data) => {
+    api.put('/settings', data).then((response) => {
       console.log('it worked');
       window.location.reload();
     })

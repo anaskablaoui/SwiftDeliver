@@ -16,22 +16,13 @@
   overflow-x: hidden;
 }
 
-/* Force la Sidebar à conserver sa place à gauche sans flotter sur le contenu */
-.page-layout > aside,
-.page-layout > .sidebar,
-.page-layout > div:first-child { 
-  width: 260px;
-  min-width: 260px;
-  flex-shrink: 0;
-  position: relative !important; /* Annule d'éventuels absolute/fixed de la sidebar */
-}
-
 /* Conteneur principal qui regroupe le Header et le Main Content */
 .main-wrapper {
   flex: 1;
   display: flex;
   flex-direction: column;
   min-width: 0; /* Empêche le tableau de casser le layout */
+  margin-left: 260px; /* Laisse la place pour la sidebar fixe */
 }
 
 /* Espacement du contenu sous le Header */

@@ -8,7 +8,7 @@ module.exports = (sequelize,DataTypes)=>
         },
         email:{
             type:DataTypes.STRING,
-            unique: true,
+            unique: 'users_email_unique',
             allowNull: false
         },
         password_hash:{

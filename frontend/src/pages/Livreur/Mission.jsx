@@ -4,20 +4,14 @@ import Sidebar from '../../components/Layout/Sidebar';
 import './Mission.css';
 import { useParams } from 'react-router-dom';
 import {useEffect,useState} from 'react';
-import axios from 'axios';
+import api from '../../services/api';
 import { Formik, Form, Field } from "formik";
 function MissionDetail() {
-  console.log('test')
-  console.log(sessionStorage.getItem('accesstoken'))
     let {id} = useParams();
 
     const [Order,setListOfOrders]= useState({})
    useEffect(() => {
-    axios.get(`http://localhost:3000/api/commandes/${id}`,{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    })
+    api.get(`/commandes/${id}`)
         .then((response) => {
             console.log(response.data);
             console.log(Array.isArray(response.data));
@@ -26,11 +20,7 @@ function MissionDetail() {
 }, []);
 
   const onSubmit = (data) => {
-    axios.put(`http://localhost:3000/api/commandes/mission/${id}`,data,{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    }).then((response)=>{
+    api.put(`/commandes/mission/${id}`, data).then((response)=>{
     console.log('it worked');
     window.location.reload();
   })

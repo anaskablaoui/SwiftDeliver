@@ -4,7 +4,7 @@ import Sidebar from "../../components/Layout/Sidebar";
 import "./NewOrder.css"; 
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
-import axios from 'axios'
+import api from '../../services/api'
 import { useParams } from 'react-router-dom'
 import {useEffect,useState} from 'react'
 
@@ -12,12 +12,7 @@ function NewOrder() {
 
   const [listOfLivreur,setListOfLivreur] = useState([])
   useEffect(()=>{
-    console.log(sessionStorage.getItem('accesstoken'))
-    axios.get("http://localhost:3000/api/livreurs",{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    }) . then((response) =>{
+    api.get("/livreurs") . then((response) =>{
       setListOfLivreur(response.data)
     })
   },[])
@@ -26,11 +21,7 @@ function NewOrder() {
     
     const [Order,setListOfOrders]= useState({})
    useEffect(() => {
-    axios.get(`http://localhost:3000/api/commandes/${id}`,{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    })
+    api.get(`/commandes/${id}`)
         .then((response) => {
             console.log(response.data);
             console.log(Array.isArray(response.data));
@@ -51,11 +42,7 @@ function NewOrder() {
   });
 
   const onSubmit = (data) => {
-    axios.patch(`http://localhost:3000/api/commandes/${id}/assigner`, data,{
-      headers:{
-        accessToken:sessionStorage.getItem('accesstoken')
-      }
-    }).then((response) => {
+    api.patch(`/commandes/${id}/assigner`, data).then((response) => {
       console.log('it worked');
       window.location.reload();
     })

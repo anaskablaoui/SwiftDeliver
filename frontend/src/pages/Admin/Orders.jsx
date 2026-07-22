@@ -2,19 +2,18 @@ import React from "react";
 import Header from "../../components/Layout/Header";
 import Sidebar from "../../components/Layout/Sidebar";
 import "./OrderHistory.css"; // N'oubliez pas d'importer le CSS
-import axios from 'axios';
+import api from '../../services/api';
 import { useEffect, useState } from "react";
+import Pagination from "../../components/Common/Pagination";
+
+const ITEMS_PER_PAGE = 10;
 
 
 
 function Order() {
   //fonction de suppression
   const deleting = (id)=>{
-      axios.delete(`http://localhost:3000/api/commandes/${id}`,{
-        headers:{
-          accessToken:sessionStorage.getItem('accesstoken')
-        }
-      }).then((response)=>{
+      api.delete(`/commandes/${id}`).then((response)=>{
         console.log('it worked');
         window.location.reload();
       })
@@ -24,21 +23,19 @@ function Order() {
   const [search,setSearch] = useState("")
   const [status,setStatus] = useState("")
   const [listOfOrders,setListOfOrders]= useState([])
-  console.log(sessionStorage.getItem("accesstoken"))
+  const [currentPage, setCurrentPage] = useState(1)
 useEffect(() => {
 
     const timer = setTimeout(() => {
 
-        axios.get("http://localhost:3000/api/commandes", {
+        api.get("/commandes", {
             params: {
-                search: search,
+                client: search,
                 status: status
-            },
-            headers: {
-                accessToken: sessionStorage.getItem("accesstoken")
             }
         }).then((response) => {
             setListOfOrders(response.data);
+            setCurrentPage(1);
         });
 
     }, 500);
@@ -46,6 +43,11 @@ useEffect(() => {
     return () => clearTimeout(timer);
 
 }, [search, status]);
+
+const paginatedOrders = listOfOrders.slice(
+  (currentPage - 1) * ITEMS_PER_PAGE,
+  currentPage * ITEMS_PER_PAGE
+);
 
   return (
     
@@ -100,7 +102,7 @@ useEffect(() => {
                 </tr>
               </thead>
               <tbody>
-                {listOfOrders.map((order, index) => (
+                {paginatedOrders.map((order, index) => (
                   <tr key={index}>
                     <td>{order.id}</td>
                     <td>{order.client.nom} {order.client.prenom}</td>
@@ -120,6 +122,13 @@ useEffect(() => {
                 ))}
               </tbody>
             </table>
+
+            <Pagination
+              currentPage={currentPage}
+              totalItems={listOfOrders.length}
+              itemsPerPage={ITEMS_PER_PAGE}
+              onPageChange={setCurrentPage}
+            />
 
             {/* Bouton Ajouter */}
             <div className="add-button-wrapper">

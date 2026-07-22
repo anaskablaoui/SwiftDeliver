@@ -1,31 +1,32 @@
 import React from "react";
 import Header from "../../components/Layout/Header";
 import Sidebar from "../../components/Layout/Sidebar";
-import axios from 'axios';
+import api from '../../services/api';
 import { useEffect, useState} from "react";
+import Pagination from "../../components/Common/Pagination";
+
+const ITEMS_PER_PAGE = 10;
 
 function OrderHistory() {
   // Données fictives pour remplir le tableau comme sur l'image
   const [search,setSearch] = useState("");
   const [status,setStatus] = useState("");
   const [listOfOrders,setListOfOrders]= useState([]);
-  console.log(sessionStorage.getItem("accesstoken"));
+  const [currentPage, setCurrentPage] = useState(1);
  useEffect(() => {
 
     const timer = setTimeout(() => {
 
-        axios.get("http://localhost:3000/api/commandes", {
+        api.get("/commandes", {
             params: {
                 search: search,
                 status: status
-            },
-            headers:{
-                accessToken:sessionStorage.getItem('accesstoken')
             }
         }).then((response) => {
             console.log(response.data);
             console.log(Array.isArray(response.data));
             setListOfOrders(response.data);
+            setCurrentPage(1);
         });
 
     }, 500);
@@ -33,6 +34,11 @@ function OrderHistory() {
     return () => clearTimeout(timer);
 
 }, [search, status]);
+
+const paginatedOrders = listOfOrders.slice(
+  (currentPage - 1) * ITEMS_PER_PAGE,
+  currentPage * ITEMS_PER_PAGE
+);
 
 
   return (
@@ -86,7 +92,7 @@ function OrderHistory() {
                 </tr>
               </thead>
               <tbody>
-                {listOfOrders.map((order, index) => (
+                {paginatedOrders.map((order, index) => (
                   <tr key={index}>
                     <td>{order.type_commande}</td>
                     <td>{order.nom_retrait}</td>
@@ -103,6 +109,13 @@ function OrderHistory() {
                 ))}
               </tbody>
             </table>
+
+            <Pagination
+              currentPage={currentPage}
+              totalItems={listOfOrders.length}
+              itemsPerPage={ITEMS_PER_PAGE}
+              onPageChange={setCurrentPage}
+            />
 
             {/* Bouton Ajouter */}
             <div className="add-button-wrapper">
