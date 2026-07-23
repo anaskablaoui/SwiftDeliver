@@ -14,6 +14,7 @@ import pickupPoint from '../../assets/pickupPoint.svg'
 function MissionDetail() {
 
     let {id} = useParams();
+    console.log(id)
 
     const [Order,setListOfOrders]= useState({})
    useEffect(() => {
@@ -41,16 +42,21 @@ function MissionDetail() {
   const mapRef = useRef(null);
 
 useEffect(() => {
+  if (Order.retrait_latitude == null || Order.retrait_longitude == null) {
+        return;
+    }
 
 
-    const map = L.map(mapRef.current);
-    
+    const map = L.map(mapRef.current).setView([33.5731, -7.5898], 12);
+
     L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
             attribution: "&copy; OpenStreetMap contributors",
         }
     ).addTo(map);
+
+    setTimeout(() => map.invalidateSize(), 100);
 
     //marqueur de livreur
     const deliveryManIcon = L.icon({
@@ -71,7 +77,8 @@ useEffect(() => {
     iconAnchor: [20, 40],
     popupAnchor: [0, -40],
     })
-    const pickupMarker = L.marker([0,0],{
+    console.log(`livraison ${Order.livraison_latitude} + ${Order.livraison_longitude}`)
+    const pickupMarker = L.marker([Order.livraison_latitude,Order.livraison_longitude],{
       icon:pickupIcon
     }).addTo(map);
     pickupMarker.bindPopup("pickup")
@@ -82,7 +89,8 @@ useEffect(() => {
     iconAnchor: [20, 40],
     popupAnchor: [0, -40],
     })
-    const deliveryMarker = L.marker([0,0],{
+    console.log(`retrait ${Order.retrait_latitude} + ${Order.retrait_longitude}`)
+    const deliveryMarker = L.marker([Order.retrait_latitude,Order.retrait_longitude],{
       icon:endPointIcon
     }).addTo(map);
     deliveryMarker.bindPopup("delivery")
@@ -103,45 +111,14 @@ useEffect(() => {
     )
 
 
-map.on("click", async (e) => {
 
-    const latitude = e.latlng.lat;
-    const longitude = e.latlng.lng;
-
-
-    setCoordinates({
-        latitude,
-        longitude
-    });
-
-
-    deliveryMarker.setLatLng(e.latlng);
-
-    try {
-        const response = await api.post(
-            "location/reverse",
-            {
-                latitude,
-                longitude
-            }
-        );
-
-        console.log(response.data.display_name)
-        setAddress(response.data.address);
-
-    } catch(error){
-
-        console.log(error);
-    }
-
-});
 
     return () => {
         navigator.geolocation.clearWatch(watchId);
         map.remove();
     };
 
-}, []);
+}, [Order]);
     
 
 

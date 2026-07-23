@@ -31,7 +31,34 @@ const reverseGeocoding = async(latitude, longitude)=>{
 
 };
 
+const forwardGeocoding = async (address) => {
+    try {
+
+        const response = await axios.get(
+            "https://nominatim.openstreetmap.org/search",
+            {
+                params: {
+                    q: address,
+                    format: "json",
+                    limit: 1
+                },
+                headers: {
+                    "User-Agent": "SwiftDelivery-App"
+                }
+            }
+        );
+
+        return response.data;
+
+    } catch (error) {
+
+        console.log("Nominatim error:", error.message);
+        return null;
+
+    }
+}
 
 module.exports = {
-    reverseGeocoding
+    reverseGeocoding,
+    forwardGeocoding
 };

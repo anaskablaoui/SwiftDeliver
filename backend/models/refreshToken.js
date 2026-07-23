@@ -1,5 +1,3 @@
-const { sequelize } = require(".");
-
 module.exports = (sequelize,DataType) => {
     const refreshToken = sequelize.define('refreshToken',{
         id:{

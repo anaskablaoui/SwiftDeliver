@@ -10,12 +10,15 @@ import MapModal from '../../components/Common/modalMap'
 
 function NewOrder() {
 
-  const [showMapModal, setShowMapModal] = useState(false);
-  
+  const [showMapModalRetrait, setShowMapModalRetrait] = useState(false);
+  const [showMapModalLivraison, setShowMapModalLivraison] = useState(false);
+
   const initialValues = {
     type_commande: "",
     nom_retrait: "",
     adresse_retrait: "",
+    latitude_retrait: "",
+    longitude_retrait: "",
     telephone_retrait: "",
     nom_livraison: "",
     adresse_livraison: "",
@@ -103,6 +106,20 @@ function NewOrder() {
                       <label htmlFor="adresseR">adresse</label>
                       <div className="input-with-error">
                         <Field as="textarea" id="adresseR" name="adresse_retrait" placeholder="saisir adresse" />
+                        <Field name="latitude_retrait" style={{ display: "none" }} />
+                        <Field name="longitude_retrait" style={{ display: "none" }} />
+                        <button type="button" onClick={() => setShowMapModalRetrait(true)}>
+                          Choisir le point de retrait
+                        </button>
+                        <MapModal
+                          isOpen={showMapModalRetrait}
+                          onClose={() => setShowMapModalRetrait(false)}
+                          onConfirm={({ address, latitude, longitude }) => {
+                            setFieldValue("adresse_retrait", address);
+                            setFieldValue("latitude_retrait", latitude);
+                            setFieldValue("longitude_retrait", longitude);
+                          }}
+                        />
                         <ErrorMessage name="adresse_retrait" component="span" className="error-msg"/>
                       </div>
                     </div>
@@ -153,12 +170,12 @@ function NewOrder() {
                             <Field as="textarea" id="adresseL" name="adresse_livraison" placeholder="saisir adresse" />
                             <Field name="latitude_livraison" style={{ display: "none" }} />
                             <Field name="longitude_livraison" style={{ display: "none" }} />
-                            <button type="button" onClick={() => setShowMapModal(true)}>
+                            <button type="button" onClick={() => setShowMapModalLivraison(true)}>
                               Choisir le point de livraison
                             </button>
                             <MapModal
-                              isOpen={showMapModal}
-                              onClose={() => setShowMapModal(false)}
+                              isOpen={showMapModalLivraison}
+                              onClose={() => setShowMapModalLivraison(false)}
                               onConfirm={({ address, latitude, longitude }) => {
                                 setFieldValue("adresse_livraison", address);
                                 setFieldValue("latitude_livraison", latitude);

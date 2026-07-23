@@ -7,6 +7,7 @@ const {validateRole} = require('../middleware/roleMiddleware')
 const {getCommande} = require('../controllers/commandesController')
 const {getCommandeWhere} = require('../services/commandeFilterService')
 const {similarity} = require('../services/missionService')
+const {forwardGeocoding} = require('../services/localisationService')
 
 router.get('/', validationToken, getCommande);
 
@@ -45,15 +46,48 @@ router.get('/:id', validationToken, async (req,res)=>{
 router.post('/', validationToken, async (req, res) => {
     try {
         const payload = req.body || {};
+        let retraitLatlng = {};
+        let livraisonLatLng = {};
+        if(!payload.latitude_retrait && ! payload.longitude_retrait){
+            const geo = await forwardGeocoding(payload.adresse_retrait)
+            retraitLatlng = {
+                latitude: geo?.[0]?.lat,
+                longitude: geo?.[0]?.lon
+            }
+        }
+        else{
+            retraitLatlng = {
+                latitude:payload.latitude_retrait,
+                longitude:payload.longitude_retrait
+            }
+        }
+
+        if(!payload.latitude_livraison && ! payload.longitude_livraison){
+            const geo = await forwardGeocoding(payload.adresse_livraison)
+            livraisonLatLng = {
+                latitude: geo?.[0]?.lat,
+                longitude: geo?.[0]?.lon
+            }
+        }
+        else{
+            livraisonLatLng= {
+                latitude:payload.latitude_livraison,
+                longitude:payload.longitude_livraison
+            }
+        }
 
         const commandeData = {
             type_commande:  payload.type_commande,
             nom_retrait: payload.nom_retrait,
             telephone_retrait: payload.telephone_retrait,
             adresse_retrait:  payload.adresse_retrait,
+            retrait_latitude:retraitLatlng.latitude,
+            retrait_longitude:retraitLatlng.longitude,
             nom_livraison: payload.nom_livraison,
             telephone_livraison: payload.telephone_livraison,
             adresse_livraison:  payload.adresse_livraison,
+            livraison_latitude:livraisonLatLng.latitude,
+            livraison_longitude:livraisonLatLng.longitude,
             distanceKM: payload.distanceKM,
             instructionSpecial: payload.instructionSpecial,
             prixLivraison: payload.prixLivraison ?? (payload.distanceKM ? Number(payload.distanceKM) * 5 : 0),
