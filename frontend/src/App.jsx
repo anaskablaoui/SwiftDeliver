@@ -13,6 +13,7 @@ import NewOrder from './pages/Client/NewOrder'
 import OrderDetails from './pages/Client/OrderDetails'
 import OrderHistory from './pages/Client/OrderHistory'
 import CProfile from './pages/Client/CProfile'
+import OrderSuivis from './pages/Client/OrderSuivis'
 
 // Livreur Pages
 import LivreurDashboard from './pages/Livreur/Dashboard'
@@ -32,6 +33,8 @@ import OrderDetailsAdmin from './pages/Admin/OrderDetails'
 import NewOrderAdmin from './pages/Admin/NewOrder'
 import NewLivreur from './pages/Admin/newLivreur'
 import AProfile from './pages/Admin/AProfile'
+import LivreurDetails from './pages/Admin/livreurDetails'
+import ClientDetails from './pages/Admin/clientDetails'
 
 function App() {
   return (
@@ -47,6 +50,7 @@ function App() {
         <Route path='/client/order/:id' element={<ProtectedRoute allowedRole="client"><OrderDetails /></ProtectedRoute>} />
         <Route path='/client/order-history' element={<ProtectedRoute allowedRole="client"><OrderHistory /></ProtectedRoute>} />
         <Route path='/client/profile' element={<ProtectedRoute allowedRole="client"><CProfile /></ProtectedRoute>} />
+        <Route path='/client/order-suivi/:id' element={<ProtectedRoute allowedRole="client"><OrderSuivis/></ProtectedRoute>}/>
 
         {/* Livreur Pages */}
         <Route path='/livreur/dashboard' element={<ProtectedRoute allowedRole="livreur"><LivreurDashboard /></ProtectedRoute>} />
@@ -66,6 +70,8 @@ function App() {
         <Route path='/admin/order/:id' element={<ProtectedRoute allowedRole="admin"><OrderDetailsAdmin/></ProtectedRoute>} ></Route>
         <Route path='/admin/new-order' element={<ProtectedRoute allowedRole="admin"><NewOrderAdmin/></ProtectedRoute>}></Route>
         <Route path='/admin/profile' element={<ProtectedRoute allowedRole="admin"><AProfile /></ProtectedRoute>} />
+        <Route path='/admin/Livreur-details/:id' element={<ProtectedRoute allowedRole="admin"><LivreurDetails/></ProtectedRoute>}/>
+        <Route path='/admin/client-details/:id' element={<ProtectedRoute allowedRole="admin"><ClientDetails/></ProtectedRoute>}/>
       </Routes>
     </BrowserRouter>
   )

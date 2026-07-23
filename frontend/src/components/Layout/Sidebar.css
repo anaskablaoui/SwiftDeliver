@@ -1,20 +1,33 @@
-/* Sidebar Container */
-aside {
-  position: fixed;
-  top: 0;
-  left: 0;
+/* Sidebar Container (Bootstrap .offcanvas supplies position/transform/backdrop below lg) */
+.app-sidebar {
   width: 260px;
-  height: 100vh;
   background-color: #1e293b; /* Dark slate background */
   color: #ffffff;
-  display: flex;
-  flex-direction: column;
   justify-content: space-between; /* Pushes logout button to the bottom */
   padding: 24px 16px;
-  box-sizing: border-box;
-  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  z-index: 200; /* Sit above the fixed header so it isn't clipped */
+  /* z-index intentionally left to Bootstrap's .offcanvas (1045) below lg, so the
+     offcanvas backdrop (1040) still sits underneath the drawer while it's open. */
+}
+
+/* Below lg: normal Bootstrap offcanvas slide-in/out behaviour applies.
+   At lg+: force it back into a permanent, always-visible column (no backdrop involved here). */
+@media (min-width: 992px) {
+  /* !important needed here: Bootstrap's own .offcanvas-start rules (same specificity)
+     set width/transform to slide the drawer off-screen, and which stylesheet "wins"
+     that tie is inconsistent between dev-server and production bundling order. */
+  .app-sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    width: 260px !important;
+    visibility: visible !important;
+    transform: none !important;
+    z-index: 200; /* Sit above the fixed header so it isn't clipped */
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  }
 }
 
 /* Common block spacing */

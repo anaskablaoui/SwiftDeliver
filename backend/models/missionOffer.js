@@ -1,10 +1,7 @@
-const { DataTypes } = require("sequelize");
-const { sequelize } = require(".");
-
 module.exports = (sequelize,DataTypes) =>{
     const missionOffer = sequelize.define("mission",{
         id:{
-            type:DataTypes.STRING,
+            type:DataTypes.INTEGER,
             autoIncrement:true,
             primaryKey:true,
         },

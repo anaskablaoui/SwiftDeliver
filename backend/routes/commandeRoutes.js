@@ -77,9 +77,9 @@ router.post('/', validationToken, async (req, res) => {
 
         for(const l of livreur){
             console.log("Livreur:", l.geoOcpation);
-console.log("Equal?", payload.codePostal === l.geoOcpation);
-console.log("Score:", similarity(String(payload.codePostal), String(l.geoOcpation)));
-             const score = similarity(String(payload.codePostal), String(l.geoOcpation));
+            console.log("Equal?", payload.codePostal === l.geoOcpation);
+            console.log("Score:", similarity(String(payload.codePostal), String(l.geoOcpation)));
+            const score = similarity(String(payload.codePostal), String(l.geoOcpation));
             
     console.log({
         client: payload.codePostal,

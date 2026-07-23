@@ -47,6 +47,7 @@ const getDashboard = async (user) => {
             };
 
         return {
+            id:commande.id,
             name: commande.nom_livraison,
             currentStep: config.currentStep,
             color: config.color,

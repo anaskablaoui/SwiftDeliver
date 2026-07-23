@@ -9,14 +9,6 @@ import { useParams } from 'react-router-dom'
 import {useEffect,useState} from 'react'
 
 function NewOrder() {
-
-  const [listOfLivreur,setListOfLivreur] = useState([])
-  useEffect(()=>{
-    api.get("/livreurs") . then((response) =>{
-      setListOfLivreur(response.data)
-    })
-  },[])
-
     let { id } = useParams();
     
     const [Order,setListOfOrders]= useState({})
@@ -27,7 +19,11 @@ function NewOrder() {
             console.log(Array.isArray(response.data));
             setListOfOrders(response.data);
         });
+    
 }, []);
+
+
+  
   
   const validationSchema = Yup.object().shape({
     type_commande: Yup.string().required("Obligatoire"),
@@ -60,7 +56,7 @@ function NewOrder() {
         <main className="NewOrderContent">
           <Formik initialValues={Order} onSubmit={onSubmit} validationSchema={validationSchema} enableReinitialize>
             <Form className="order-form">
-              <h1>{id}</h1>
+              
               {/* 1. INFORMATION GENERALE */}
               <div className="section-full-width general-info">
                 <div className="info-row">
@@ -123,18 +119,7 @@ function NewOrder() {
                         <Field type="number" id="distance" name="distanceKM" placeholder="xx KM" />
                         <ErrorMessage name="distanceKM" component="span" className="error-msg"/>
                       </div>
-
-                      <label htmlFor="livreur">Livreur</label>
-                      <div className="livreur">
-                        <Field as="select" id="livreur" name="livreur" >
-                          <option value="" disabled selected>selectionner livreur</option>
-                          {listOfLivreur.map((order,index)=>(
-                             <option value={order.id}>{order.User.nom} {order.User.prenom}</option>
-                          ))}
-                        </Field>
-                        <ErrorMessage name="livreur" component="span" className="error-msg"/>
-        
-                      </div>
+                      
                     </div>
                   </div>
                   

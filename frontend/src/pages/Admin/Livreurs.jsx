@@ -63,8 +63,8 @@ function LivreurManagement() {
         <main className="livreur-content">
           
           {/* BARRE DE FILTRE SUPÉRIEURE */}
-          <div className="filter-card">
-            <div className="filter-group">
+          <div className="filter-card d-flex flex-wrap gap-3 align-items-center">
+            <div className="filter-group d-flex align-items-center gap-2">
               <label htmlFor="search-livreur">Nom de livreur</label>
               <input 
                 type="text" 
@@ -75,7 +75,7 @@ function LivreurManagement() {
               />
             </div>
             
-            <div className="filter-group">
+            <div className="filter-group d-flex align-items-center gap-2">
               <label htmlFor="status-filter">status</label>
               <select 
                 id="status-filter"
@@ -91,8 +91,8 @@ function LivreurManagement() {
           </div>
 
           {/* SECTION TABLEAU */}
-          <div className="table-container">
-            <table className="livreur-table">
+          <div className="table-container table-responsive">
+            <table className="table livreur-table">
               <thead>
                 <tr>
                   <th>Photo</th>
@@ -125,27 +125,29 @@ function LivreurManagement() {
                     
                     {/* Colonne Actions contenant les 3 boutons */}
                     <td className="td-actions">
-                      <div className="action-buttons-group">
+                      <div className="d-flex flex-column align-items-center gap-2">
                         {/* Bouton Supprimer (Rouge avec X blanc) */}
-                        <button className="action-btn btn-delete" title="Supprimer" onClick={() => deleting(livreur.id)}>
+                        <button className="action-btn btn-delete" title="Supprimer" onClick={() => api.delete(`livreurs/${livreur.id}`).then(()=>{
+                          window.location.reload()
+                        })}>
                           <svg viewBox="0 0 24 24" className="action-icon">
                             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                           </svg>
                         </button>
                         
                         {/* Bouton Détails / Vue (Gris foncé avec Oeil blanc) */}
-                        <button className="action-btn btn-view" title="Voir détails">
+                        <a href={`/admin/Livreur-details/${livreur.id}`}><button className="action-btn btn-view" title="Voir détails">
                           <svg viewBox="0 0 24 24" className="action-icon">
                             <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
                           </svg>
-                        </button>
+                        </button></a>
                         
                         {/* Bouton Configurer (Orange avec curseurs d'options) */}
-                        <button className="action-btn btn-settings" title="Modifier">
+                        <a href={`/admin/Livreur-details/${livreur.id}`}><button className="action-btn btn-settings" title="Modifier">
                           <svg viewBox="0 0 24 24" className="action-icon">
                             <path d="M3 17v2h6v-2H3zm0-8v2h10V9H3zm10 10v-2h8v-2h-8v-2h-2v6h2zM7 5v2H3v2h4v2h2V5H7zm14 4V7h-8v2h8z"/>
                           </svg>
-                        </button>
+                        </button></a>
                       </div>
                     </td>
                   </tr>
@@ -163,7 +165,7 @@ function LivreurManagement() {
 
           {/* BOUTON D'AJOUT EN BAS À DROITE */}
           <div className="add-button-container">
-            <a href=""><button className="btn-add-livreur">+Ajouter</button></a>
+            <a href="/admin/new-livreur"><button className="btn-add-livreur">+Ajouter</button></a>
           </div>
 
         </main>

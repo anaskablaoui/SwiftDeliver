@@ -52,7 +52,7 @@ function NewOrder() {
         <main className="NewOrderContent">
           <Formik initialValues={Order} onSubmit={onSubmit} validationSchema={validationSchema} enableReinitialize>
             <Form className="order-form">
-              <h1>{id}</h1>
+              <br />
               {/* 1. INFORMATION GENERALE */}
               <div className="section-full-width general-info">
                 <div className="info-row">

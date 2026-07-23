@@ -55,7 +55,7 @@ function Sidebar({ role }) {
     }
 
     return (
-        <aside>
+        <aside className="offcanvas offcanvas-start app-sidebar" tabIndex="-1" id="appSidebar">
             <div className="blocks">bonjour Monsieur</div>
             <div className="blocks">{nav}</div>
             <div className="blocks"><button onClick={submit}>deconnexion</button></div>

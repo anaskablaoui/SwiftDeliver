@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../../components/Layout/Header";
 import Sidebar from "../../components/Layout/Sidebar";
+import "../Admin/OrderHistory.css";
 import api from '../../services/api';
 import { useEffect, useState} from "react";
 import Pagination from "../../components/Common/Pagination";
@@ -51,8 +52,8 @@ const paginatedOrders = listOfOrders.slice(
         
         <main className="orderHistory-content">
           {/* Section Filtrage */}
-          <div className="filter-container">
-            <div className="filter-group">
+          <div className="filter-container d-flex flex-wrap gap-3 align-items-center">
+            <div className="filter-group d-flex align-items-center gap-2">
               <label>Nom de retrait</label>
               <input
                 type="text"
@@ -62,7 +63,7 @@ const paginatedOrders = listOfOrders.slice(
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <div className="filter-group">
+            <div className="filter-group d-flex align-items-center gap-2">
               <label>status</label>
               <select className="filter-select"
               value={status}
@@ -79,8 +80,8 @@ const paginatedOrders = listOfOrders.slice(
           </div>
 
           {/* Section Tableau */}
-          <div className="table-container">
-            <table className="orders-table">
+          <div className="table-container table-responsive">
+            <table className="table orders-table">
               <thead>
                 <tr>
                   <th>Type livraison</th>
@@ -99,10 +100,22 @@ const paginatedOrders = listOfOrders.slice(
                     <td>{order.nom_livraison}</td>
                     <td className="price-cell">{order.prixLivraison}</td>
                     <td>{order.Statut}</td>
-                    <td>
-                      <div className="action-buttons">
-                        <a href={`/livreur/delivery/${order.id}`}><button className="btn-action btn-view">👁️</button></a>
-                        <a href={`/livreur/Mission/${order.id}`}><button className="btn-action btn-start" title="Démarrer la mission">▶️</button></a>
+                    <td className="td-actions">
+                      <div className="d-flex flex-column align-items-center gap-2">
+                        <a href={`/livreur/delivery/${order.id}`}>
+                          <button className="action-btn btn-view" title="Voir détails">
+                            <svg viewBox="0 0 24 24" className="action-icon">
+                              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                            </svg>
+                          </button>
+                        </a>
+                        <a href={`/livreur/Mission/${order.id}`}>
+                          <button className="action-btn btn-start" title="Démarrer la mission">
+                            <svg viewBox="0 0 24 24" className="action-icon">
+                              <path d="M8 5v14l11-7z"/>
+                            </svg>
+                          </button>
+                        </a>
                       </div>
                     </td>
                   </tr>

@@ -6,10 +6,16 @@
 }
 
 .main-window {
-  margin-left: 260px;
-  width: calc(100% - 260px);
+  width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+@media (min-width: 992px) {
+  .main-window {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+  }
 }
 
 .NewOrderContent {
@@ -26,6 +32,8 @@
 /* --- 1. Infos Générales --- */
 .info-row {
   display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
   align-items: center;
   justify-content: space-between;
   max-width: 1000px;
@@ -50,8 +58,14 @@
 /* --- 2. Grille Formulaire --- */
 .form-grid-columns {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 500px)); 
+  grid-template-columns: 1fr; /* Une seule colonne sur mobile */
   gap: 60px;
+}
+
+@media (min-width: 992px) {
+  .form-grid-columns {
+    grid-template-columns: repeat(2, minmax(0, 500px));
+  }
 }
 
 .grid-column {
@@ -69,6 +83,7 @@
 /* --- 3. Alignement des rangées et Wrappers Formik --- */
 .form-group-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   margin-bottom: 20px;
 }
@@ -82,6 +97,7 @@
 /* Conteneur pour coupler un input avec son message d'erreur */
 .input-with-error {
   flex: 1;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   position: relative;

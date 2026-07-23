@@ -5,8 +5,12 @@ import "./NewOrder.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from 'yup';
 import api from '../../services/api'
+import { useState } from "react";
+import MapModal from '../../components/Common/modalMap'
 
 function NewOrder() {
+
+  const [showMapModal, setShowMapModal] = useState(false);
   
   const initialValues = {
     type_commande: "",
@@ -15,6 +19,8 @@ function NewOrder() {
     telephone_retrait: "",
     nom_livraison: "",
     adresse_livraison: "",
+    latitude_livraison: "",
+    longitude_livraison: "",
     telephone_livraison: "",
     distanceKM: "",
     instructionSpecial: ""
@@ -40,6 +46,8 @@ function NewOrder() {
     })
   };
 
+  
+
   return (
     <div className="dashboard-layout">
       
@@ -49,9 +57,11 @@ function NewOrder() {
         
         
         <main className="NewOrderContent">
+          
           <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+            {({ setFieldValue }) => (
             <Form className="order-form">
-              
+
               {/* 1. INFORMATION GENERALE */}
               <div className="section-full-width general-info">
                 <div className="info-row">
@@ -140,7 +150,21 @@ function NewOrder() {
                     <div className="form-group-row">
                       <label htmlFor="adresseL">adresse</label>
                       <div className="input-with-error">
-                        <Field as="textarea" id="adresseL" name="adresse_livraison" placeholder="saisir adresse" />
+                            <Field as="textarea" id="adresseL" name="adresse_livraison" placeholder="saisir adresse" />
+                            <Field name="latitude_livraison" style={{ display: "none" }} />
+                            <Field name="longitude_livraison" style={{ display: "none" }} />
+                            <button type="button" onClick={() => setShowMapModal(true)}>
+                              Choisir le point de livraison
+                            </button>
+                            <MapModal
+                              isOpen={showMapModal}
+                              onClose={() => setShowMapModal(false)}
+                              onConfirm={({ address, latitude, longitude }) => {
+                                setFieldValue("adresse_livraison", address);
+                                setFieldValue("latitude_livraison", latitude);
+                                setFieldValue("longitude_livraison", longitude);
+                              }}
+                            />
                         <ErrorMessage name="adresse_livraison" component="span" className="error-msg"/>
                       </div>
                     </div>
@@ -167,6 +191,7 @@ function NewOrder() {
 
               </div>
             </Form>
+            )}
           </Formik>
         </main>
       </div>

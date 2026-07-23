@@ -48,8 +48,8 @@ const paginatedClients = listOfClient.slice(
         
         <main className="orderHistory-content">
           {/* Section Filtrage */}
-          <div className="filter-container">
-            <div className="filter-group">
+          <div className="filter-container d-flex flex-wrap gap-3 align-items-center">
+            <div className="filter-group d-flex align-items-center gap-2">
               <label>Nom</label>
               <input
                 type="text"
@@ -62,8 +62,8 @@ const paginatedClients = listOfClient.slice(
           </div>
 
           {/* Section Tableau */}
-          <div className="table-container">
-            <table className="orders-table">
+          <div className="table-container table-responsive">
+            <table className="table orders-table">
               <thead>
                 <tr>
                   <th>Photo</th>
@@ -77,15 +77,29 @@ const paginatedClients = listOfClient.slice(
               <tbody>
                 {paginatedClients.map((order, index) => (
                   <tr key={index}>
-                    <td><img src={order.photo} alt="" /></td>
+                    <td className="td-photo">
+                      <div className="avatar-circle">
+                        {order.photo ? (
+                          <img src={order.photo} alt="" className="avatar-photo-img" />
+                        ) : (
+                          <svg viewBox="0 0 24 24" className="table-avatar-icon">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                          </svg>
+                        )}
+                      </div>
+                    </td>
                     <td>{order.nom} {order.prenom}</td>
                     <td>{order.email}</td>
                     <td className="price-cell">{order.telephone}</td>
-                    
-                    <td>
-                      <div className="action-buttons">
-                        <button className="btn-action btn-edit">⚙️</button>
-                        <button className="btn-action btn-view">👁️</button>
+
+                    <td className="td-actions">
+                      <div className="d-flex flex-column align-items-center gap-2">
+
+                        <a href={`/admin/client-details/${order.id}`}><button className="action-btn btn-view" title="Voir détails">
+                          <svg viewBox="0 0 24 24" className="action-icon">
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                          </svg>
+                        </button></a>
                       </div>
                     </td>
                   </tr>

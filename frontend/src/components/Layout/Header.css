@@ -4,7 +4,6 @@
   background-color: transparent;
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Pushes content to the top-right */
   padding: 0 40px; /* Spacing from the right edge */
   box-sizing: border-box;
   position: fixed;
@@ -14,9 +13,27 @@
   z-index: 100; /* Below the sidebar (z-index: 200) but above page content */
 }
 
+.sidebar-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.sidebar-toggle-icon {
+  width: 24px;
+  height: 24px;
+  fill: #1e293b;
+}
+
 .app-header-logo-wrap {
   display: flex;
   align-items: center;
+  margin-left: auto; /* Keeps the logo pinned right whether or not the toggle button is shown */
 }
 
 .header-logo {

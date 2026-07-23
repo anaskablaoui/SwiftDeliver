@@ -9,3 +9,15 @@ body {
   width: 100%;
   overflow-x: hidden;
 }
+
+/* Brand blue for Bootstrap's pagination component */
+.pagination .page-link {
+  color: #3498db;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #3498db;
+  border-color: #3498db;
+  color: #ffffff;
+}
+

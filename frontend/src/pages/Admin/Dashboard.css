@@ -6,10 +6,16 @@
 }
 
 .main-window {
-  margin-left: 260px; /* Aligné sur la largeur de votre Sidebar */
-  width: calc(100% - 260px);
+  width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+@media (min-width: 992px) {
+  .main-window {
+    margin-left: 260px; /* Aligné sur la largeur de votre Sidebar */
+    width: calc(100% - 260px);
+  }
 }
 
 /* Zone principale du tableau de bord */
@@ -24,13 +30,14 @@
 /* --- LE BLOC DES CARTES DE STATS --- */
 .stats-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 30px; /* Espace entre chaque carte */
   width: 100%;
   max-width: 1100px;
 }
 
 .stat-card {
-  flex: 1; /* Distribue l'espace équitablement entre les 3 cartes */
+  flex: 1 1 200px; /* Distribue l'espace équitablement, empile sur mobile */
   background-color: #ffffff;
   border-radius: 6px;
   padding: 24px 30px;

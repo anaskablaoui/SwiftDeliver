@@ -10,16 +10,14 @@ function ClientDashboard(){
   
   {/*test variable */}
   const steps = ['en attente', 'assigne au livreur', 'en cours de retrait', 'en livraison', 'livree'];
-   const deliveries = [
-    { name: 'livraison a', currentStep: 4, color: '#22c55e' }, // all done -> green
-    { name: 'livraison b', currentStep: 2, color: '#f59e0b' }, // stopped at "en cours de retrait"
-    { name: 'livraison c', currentStep: 3, color: '#d946ef' }, // stopped at "en livraison"
-  ];
 
   const [dashboard, setDashboard] = useState({
     stats: {},
     deliveries: [],
 });
+
+console.log(dashboard.stats)
+console.log(dashboard.deliveries)
 
 useEffect(() => {
 
@@ -60,7 +58,7 @@ useEffect(() => {
             <p className="chart-placeholder">livraison en cours</p>
             {dashboard.deliveries.map((d) => (
               <div key={d.name} style={{ display: 'flex', alignItems: 'center', marginBottom: '40px', width: '100%' }}>
-                <div style={{ width: '120px', fontWeight: 'bold' }}>{d.name}</div>
+                <a href={`/client/order-suivi/${d.id}`}><div style={{ width: '120px', fontWeight: 'bold' }}>{d.name}</div></a>
                 <div style={{ flex: 1 }}>
                   <Stepper steps={steps} currentStep={d.currentStep} color={d.color} />
                 </div>

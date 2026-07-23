@@ -22,6 +22,15 @@ module.exports = (sequelize,DataType) => {
                allowNull:false
             }
         ,
+        retrait_Latitude:{
+            type:DataType.INTEGER,
+            allowNull:false
+        },
+        retrait_longitude:
+        {
+            type:DataType.INTEGER,
+            allowNull:false
+        },
         //pointLivraison
         nom_livraison:{
                 type:DataType.STRING(100),
@@ -36,6 +45,14 @@ module.exports = (sequelize,DataType) => {
                 allowNull:false
             }
         ,
+        livraison_latitude:{
+            type:DataType.INTEGER,
+            allowNull:false
+        },
+        livraison_longitude:{
+            type:DataType.INTEGER,
+            allowNull:false
+        },
         //details
         distanceKM:{
                 type:DataType.DECIMAL(5,2),

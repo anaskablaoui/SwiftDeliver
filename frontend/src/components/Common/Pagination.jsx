@@ -1,5 +1,3 @@
-import "./Pagination.css";
-
 export default function Pagination({ currentPage, totalItems, itemsPerPage, onPageChange }) {
   const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
 
@@ -8,32 +6,34 @@ export default function Pagination({ currentPage, totalItems, itemsPerPage, onPa
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <div className="pagination">
-      <button
-        className="pagination-btn"
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-      >
-        Précédent
-      </button>
+    <ul className="pagination flex-wrap justify-content-center">
+      <li className={`page-item${currentPage === 1 ? " disabled" : ""}`}>
+        <button
+          className="page-link"
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Précédent
+        </button>
+      </li>
 
       {pages.map((page) => (
-        <button
-          key={page}
-          className={`pagination-btn${page === currentPage ? " active" : ""}`}
-          onClick={() => onPageChange(page)}
-        >
-          {page}
-        </button>
+        <li key={page} className={`page-item${page === currentPage ? " active" : ""}`}>
+          <button className="page-link" onClick={() => onPageChange(page)}>
+            {page}
+          </button>
+        </li>
       ))}
 
-      <button
-        className="pagination-btn"
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-      >
-        Suivant
-      </button>
-    </div>
+      <li className={`page-item${currentPage === totalPages ? " disabled" : ""}`}>
+        <button
+          className="page-link"
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Suivant
+        </button>
+      </li>
+    </ul>
   );
 }

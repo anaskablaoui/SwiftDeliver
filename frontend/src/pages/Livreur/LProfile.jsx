@@ -59,7 +59,7 @@ function CProfile() {
     <div className="dashboard-layout">
       {/* Sidebar & Header intégrés globalement */}
       <Header />
-      <Sidebar role="client" />
+      <Sidebar role="livreur" />
       
       <div className="main-window">
         
@@ -92,7 +92,7 @@ function CProfile() {
             {/* FORMULAIRE GAUCHE : MOT DE PASSE */}
             <div className="profile-card-form">
               <h3>Changer le mots de passe</h3>
-              <Formik initialValues={passwordInitialValues} onSubmit={onPasswordSubmit} validationSchema={passwordValidationSchema}>
+              <Formik initialValues={passwordInitialValues} onSubmit={onInfoSubmit} validationSchema={passwordValidationSchema}>
                 <Form>
                   <div className="profile-form-group">
                     <label htmlFor="old-password">ancien mots de passe:</label>

@@ -6,10 +6,16 @@
 }
 
 .main-window {
-  margin-left: 260px;
-  width: calc(100% - 260px);
+  width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+@media (min-width: 992px) {
+  .main-window {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+  }
 }
 
 /* Contenu Principal */
@@ -26,17 +32,7 @@
   background-color: #ffffff;
   border-radius: 6px;
   padding: 20px 35px;
-  display: flex;
-  gap: 80px; /* Grand espacement horizontal entre les filtres */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-  align-items: center;
-  max-width: 1100px;
-}
-
-.filter-group {
-  display: flex;
-  align-items: center;
-  gap: 25px;
 }
 
 .filter-group label {
@@ -64,9 +60,8 @@
 
 /* --- LE TABLEAU --- */
 .table-container {
-  max-width: 1100px;
   border-radius: 8px;
-  overflow: hidden; /* Applique l'arrondi sur les bordures extérieures */
+  overflow-x: auto; /* Applique l'arrondi + laisse défiler horizontalement sur petit écran */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
 }
 
@@ -78,7 +73,7 @@
 
 /* En-tête bleu ciel du tableau */
 .livreur-table th {
-  background-color: #38bdf8; /* Couleur bleue vive du header */
+  background-color: #3498db; /* Couleur bleue vive du header */
   color: #ffffff;
   font-weight: 600;
   font-size: 0.9rem;
@@ -117,13 +112,6 @@
 /* --- LES ACTIONS DU TABLEAU --- */
 .td-actions {
   width: 110px;
-}
-
-.action-buttons-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px; /* Alignement vertical de vos boutons d'action */
 }
 
 /* Style de base des icônes d'action */
@@ -174,7 +162,6 @@
 .add-button-container {
   display: flex;
   justify-content: flex-end;
-  max-width: 1100px;
   margin-top: 10px;
 }
 

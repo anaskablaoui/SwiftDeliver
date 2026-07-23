@@ -42,7 +42,7 @@ router.get('/', validationToken, async (req, res) => {
 })
 
 router.get('/:id', validationToken,validateRole('admin'), async (req,res)=>{
-    console.log(req.params.id)
+    console.log("====="+req.params.id)
     try{
         const livreur = await db.Livreur.findOne({
             where:{
@@ -51,10 +51,17 @@ router.get('/:id', validationToken,validateRole('admin'), async (req,res)=>{
             include:[
                 {
                     model:db.User,
-                    as:'user'
+                    as:'User'
                 }
             ]
         })
+        if(!livreur){
+            console.log('erreur')
+            res.status(404).json({
+                message:"livreur not found "
+            })
+        }
+        console.log(livreur)
         res.json(livreur)
     }
     catch(error)
@@ -99,7 +106,33 @@ router.post('/', validationToken, (req,res)=> {
 })
 
 router.put('/:id', validationToken,validateRole('admin'), async (req,res)=>{
-    res.json("livreur modification")
+    try{
+        const livreur = await db.Livreur.findByPk(req.params.id)
+        if(!livreur){
+            return res.status(404).json({
+                message:'livreur not found'
+            })
+        }
+
+        const { nom, prenom, email, telephone, type_vehicule } = req.body
+
+        await db.User.update(
+            { nom, prenom, email, telephone },
+            { where: { id: livreur.user_id } }
+        )
+
+        await db.Livreur.update(
+            { type_vehicule },
+            { where: { id: req.params.id } }
+        )
+
+        res.json({ message: 'Livreur mis à jour avec succès' })
+    } catch(error){
+        console.log(error)
+        res.status(500).json({
+            message:'erreur de mise a jour du livreur'
+        })
+    }
 })
 
 router.get('/assignement',validationToken, async (req,res)=>{
@@ -124,6 +157,40 @@ router.get('/assignement',validationToken, async (req,res)=>{
     }
 })
 
+
+router.delete('/:id',validationToken,async (req,res)=>{
+    try{
+    const livreur = await db.Livreur.findByPk(req.params.id);
+
+    if(!livreur){
+        return res.status(404).json({
+            message:"livreur iconnue"
+        })
+    }
+    else{
+        await db.Livreur.destroy({
+            where:{
+                id:req.params.id
+            }
+        })
+
+        await db.User.destroy({
+            where:{
+                id:livreur.user_id
+            }
+        })
+        return res.json({
+            message:"livreur supprime"
+        })
+    }}
+    catch(error){
+        console.log(error)
+        return res.status(500).json({
+            message:"erreur de destruction de livreur   "
+        })
+    }
+
+})
 
 
 module.exports =  router

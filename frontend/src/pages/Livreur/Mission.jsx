@@ -44,8 +44,7 @@ useEffect(() => {
 
 
     const map = L.map(mapRef.current);
-
-
+    
     L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
@@ -87,6 +86,21 @@ useEffect(() => {
       icon:endPointIcon
     }).addTo(map);
     deliveryMarker.bindPopup("delivery")
+    
+    const watchId= navigator.geolocation.watchPosition(
+      (position)=>{
+        setCoordinates(position.coords)
+        
+        //move livreur marker 
+        meMarker.setLatLng([position.coords.latitude,position.coords.longitude])
+
+        // centralize the map 
+        map.setView([position.coords.latitude,position.coords.longitude],16)
+      },
+      (error)=>{
+        console.log(error)
+      }
+    )
 
 
 map.on("click", async (e) => {
@@ -103,27 +117,22 @@ map.on("click", async (e) => {
 
     deliveryMarker.setLatLng(e.latlng);
 
-
     try {
-
         const response = await api.post(
-            "/location/reverse",
+            "location/reverse",
             {
                 latitude,
                 longitude
             }
         );
 
-
+        console.log(response.data.display_name)
         setAddress(response.data.address);
-
 
     } catch(error){
 
         console.log(error);
-
     }
-
 
 });
 

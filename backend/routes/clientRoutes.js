@@ -33,16 +33,16 @@ router.get('/', validationToken,validateRole('admin'), async (req,res)=>{
         res.status(500).json({error:'Errur lors de la recuperation de donne'})
     }
 })
-router.get('/clients/:id', validationToken,validateRole('admin'), async (req,res)=>{
+router.get('/:id', validationToken,validateRole('admin'), async (req,res)=>{
     console.log(req.params.id)
     try{
         const client = await db.User.findOne({
             where:{
                 id:req.params.id,
-                role:'client'
+                
             }
         })
-        req.json(client)
+        res.json(client)
     } catch (error){
         console.log(error)
         res.status(500).json({error:'erreur de recuperation de donne'})

@@ -1,0 +1,19 @@
+/* Suivi de commande : carte plein ecran dans la zone de contenu */
+.order-suivi-page {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  padding-top: 70px; /* Clears the fixed header */
+  height: 100vh;
+  width: 100%;
+}
+
+.order-suivi-map {
+  height: 100%;
+  width: 100%;
+}
+
+.order-suivi-map .leaflet-container {
+  height: 100%;
+  width: 100%;
+}

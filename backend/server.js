@@ -28,7 +28,7 @@ app.use('/api/clients', clientRoutes)
 app.use('/api/stats', statsRoutes)
 app.use('/api/settings', settingsRoutes)
 app.use('/api/mission',missionRoutes)
-app.use('api/location', locationRoute)
+app.use('/api/location', locationRoute)
 
 db.sequelize.sync()
     .then(() => {

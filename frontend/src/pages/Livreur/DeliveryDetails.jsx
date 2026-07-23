@@ -1,105 +1,168 @@
 import React from "react";
 import Header from "../../components/Layout/Header";
 import Sidebar from "../../components/Layout/Sidebar";
-
+import "../Client/NewOrder"; 
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from 'yup';
+import api from '../../services/api'
+import { useParams } from 'react-router-dom'
+import {useEffect,useState} from 'react'
 
 function NewOrder() {
+    let { id } = useParams();
+    
+    const [Order,setListOfOrders]= useState({})
+   useEffect(() => {
+    api.get(`/commandes/${id}`)
+        .then((response) => {
+            console.log(response.data);
+            console.log(Array.isArray(response.data));
+            setListOfOrders(response.data);
+        });
+}, []);
+  
+  const validationSchema = Yup.object().shape({
+    type_commande: Yup.string().required("Obligatoire"),
+    nom_retrait: Yup.string().required("Obligatoire"),
+    adresse_retrait: Yup.string().required("Obligatoire"),
+    telephone_retrait: Yup.string().required("Obligatoire"),
+    nom_livraison: Yup.string().required("Obligatoire"),
+    adresse_livraison: Yup.string().required("Obligatoire"),
+    telephone_livraison: Yup.string().required("Obligatoire"),
+    distanceKM: Yup.number().required("Obligatoire").positive("Doit être positive"),
+    instructionSpecial: Yup.string().required("Obligatoire")
+  });
+
+  const onSubmit = (data) => {
+    api.put(`/commandes/${id}`, data).then((response) => {
+      console.log('it worked');
+      window.location.reload();
+    })
+  };
+
+
   return (
     <div className="dashboard-layout">
-      {/* Sidebar à gauche, Header en haut à droite */}
-      <Header />
+        <Header/>
       <Sidebar role="livreur" />
       
       <div className="main-window">
         
         
         <main className="NewOrderContent">
-          <form className="order-form" onSubmit={(e) => { e.preventDefault(); window.location.reload(); }}>
-            
-            {/* 1. SECTION INFORMATION GENERALE */}
-            <div className="section-full-width general-info">
-              <div className="info-row">
-                <h3>Information general</h3>
-                <div className="inline-field">
-                  <label htmlFor="type">type de livraison</label>
-                  <select id="type">
-                    <option value="" disabled selected>selectionner le type</option>
-                    <option value="restaurant">Restaurant</option>
-                    <option value="pharmacie">Pharmacie</option>
-                    <option value="colis">Colis</option>
-                    <option value="courses">Courses</option>
-                  </select>
-                </div>
-                <button type="submit" className="btn-validate">valider</button>
-              </div>
-            </div>
-
-            {/* 2. GRILLE DE COLONNES (Retrait vs Dépôt) */}
-            <div className="form-grid-columns">
-              
-              {/* Colonne Gauche : Point de retrait */}
-              <div className="grid-column">
-                <div className="container-box">
-                  <h3>Point de retrait</h3>
-                  
-                  <div className="form-group-row">
-                    <label htmlFor="nomR">Nom du contact</label>
-                    <input type="text" id="nomR" placeholder="saisir le nom"/>
+          <Formik initialValues={Order} onSubmit={onSubmit} validationSchema={validationSchema} enableReinitialize>
+            <Form className="order-form">
+            <br />
+              {/* 1. INFORMATION GENERALE */}
+              <div className="section-full-width general-info">
+                <div className="info-row">
+                  <h3>Information general</h3>
+                  <div className="inline-field">
+                    <label htmlFor="type">type de livraison</label>
+                    <div className="input-with-error">
+                      <Field as="select" name="type_commande" id="type" >
+                        <option value="" disabled>selectionner le type</option>
+                        <option value="restaurant">restaurant</option>
+                        <option value="pharmacie">pharmacie</option>
+                        <option value="colis">colis</option>
+                        <option value="courses">courses</option>
+                      </Field>
+                      <ErrorMessage name="type_commande" component="span" className="error-msg"/>
+                    </div>
                   </div>
-                  
-                  <div className="form-group-row">
-                    <label htmlFor="adressR">adresse</label>
-                    <textarea id="adressR" placeholder="saisir adresse"></textarea>
-                  </div>
-                  
-                  <div className="form-group-row">
-                    <label htmlFor="telephoneR">telephone</label>
-                    <input type="tel" id="telephoneR" placeholder="06/07 ********"/>
-                  </div>
-                </div>
-
-                {/* Section Détails placée sous le Point de Retrait */}
-                <div className="container-box details-box">
-                  <h3>details</h3>
-                  <div className="form-group-row">
-                    <label htmlFor="distance">Distance</label>
-                    <input type="number" id="distance" placeholder="xx KM" />
-                  </div>
+                 
                 </div>
               </div>
 
-              {/* Colonne Droite : Point de dépôt */}
-              <div className="grid-column">
-                <div className="container-box">
-                  <h3>Point de dépôt</h3>
-                  
-                  <div className="form-group-row">
-                    <label htmlFor="nomD">Nom du contact</label>
-                    <input type="text" id="nomD" placeholder="saisir le nom"/>
+              {/* 2. GRILLE DE COLONNES (Retrait vs Dépôt) */}
+              <div className="form-grid-columns">
+                
+                {/* Colonne Gauche : Point de retrait + Distance */}
+                <div className="grid-column">
+                  <div className="container-box">
+                    <h3>Point de retrait</h3>
+                    
+                    <div className="form-group-row">
+                      <label htmlFor="nomR">Nom du contact</label>
+                      <div className="input-with-error">
+                        <Field id="nomR" name="nom_retrait" placeholder="saisir le nom" />
+                        <ErrorMessage name="nom_retrait" component="span" className="error-msg"/>
+                      </div>
+                    </div>
+                    
+                    <div className="form-group-row">
+                      <label htmlFor="adresseR">adresse</label>
+                      <div className="input-with-error">
+                        <Field as="textarea" id="adresseR" name="adresse_retrait" placeholder="saisir adresse" />
+                        <ErrorMessage name="adresse_retrait" component="span" className="error-msg"/>
+                      </div>
+                    </div>
+                    
+                    <div className="form-group-row">
+                      <label htmlFor="telephoneR">telephone</label>
+                      <div className="input-with-error">
+                        <Field id="telephoneR" name="telephone_retrait" placeholder="06/07 ********" />
+                        <ErrorMessage name="telephone_retrait" component="span" className="error-msg"/>
+                      </div>
+                    </div>
                   </div>
-                  
-                  <div className="form-group-row">
-                    <label htmlFor="adressD">adresse</label>
-                    <textarea id="adressD" placeholder="saisir adresse"></textarea>
-                  </div>
-                  
-                  <div className="form-group-row">
-                    <label htmlFor="telephoneD">telephone</label>
-                    <input type="tel" id="telephoneD" placeholder="06/07 ********"/>
+
+                  <div className="container-box details-box">
+                    <h3>details</h3>
+                    <div className="form-group-row">
+                      <label htmlFor="distance">Distance</label>
+                      <div className="input-with-error">
+                        <Field type="number" id="distance" name="distanceKM" placeholder="xx KM" />
+                        <ErrorMessage name="distanceKM" component="span" className="error-msg"/>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Section Informations placée sous le Point de Dépôt */}
-                <div className="container-box details-box">
-                  <div className="form-group-row alignment-fix">
-                    <label htmlFor="informations">informations</label>
-                    <textarea id="informations" placeholder="saisir des details pour le livreur"></textarea>
+                {/* Colonne Droite : Point de dépôt + Informations */}
+                <div className="grid-column">
+                  <div className="container-box">
+                    <h3>Point de dépôt</h3>
+                    
+                    <div className="form-group-row">
+                      <label htmlFor="nomL">Nom du contact</label>
+                      <div className="input-with-error">
+                        <Field id="nomL" name="nom_livraison" placeholder="saisir le nom" />
+                        <ErrorMessage name="nom_livraison" component="span" className="error-msg"/>
+                      </div>
+                    </div>
+                    
+                    <div className="form-group-row">
+                      <label htmlFor="adresseL">adresse</label>
+                      <div className="input-with-error">
+                        <Field as="textarea" id="adresseL" name="adresse_livraison" placeholder="saisir adresse" />
+                        <ErrorMessage name="adresse_livraison" component="span" className="error-msg"/>
+                      </div>
+                    </div>
+                    
+                    <div className="form-group-row">
+                      <label htmlFor="telephoneL">telephone</label>
+                      <div className="input-with-error">
+                        <Field id="telephoneL" name="telephone_livraison" placeholder="06/07 ********" />
+                        <ErrorMessage name="telephone_livraison" component="span" className="error-msg"/>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="container-box details-box">
+                    <div className="form-group-row alignment-fix">
+                      <label htmlFor="informations">informations</label>
+                      <div className="input-with-error">
+                        <Field as="textarea" id="informations" name="instructionSpecial" placeholder="saisir des details pour le livreur" />
+                        <ErrorMessage name="instructionSpecial" component="span" className="error-msg"/>
+                      </div>
+                    </div>
                   </div>
                 </div>
+
               </div>
-
-            </div>
-          </form>
+            </Form>
+          </Formik>
         </main>
       </div>
     </div>
